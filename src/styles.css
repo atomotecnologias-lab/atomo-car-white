@@ -1,0 +1,297 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Primos Automóveis — Design System v2
+ * Direção: automotivo premium, performance, escuro, tecnológico.
+ * Paleta: Verde Performance / Racing + Black Carbon / Premium + Titanium + White Clean.
+ * Tipografia: Sora (display), Inter (sans), JetBrains Mono (técnico).
+ */
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Inter", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Brand tokens */
+  --color-performance: var(--performance);
+  --color-racing: var(--racing);
+  --color-carbon: var(--carbon);
+  --color-premium: var(--premium);
+  --color-titanium: var(--titanium);
+  --color-clean: var(--clean);
+
+  /* Aliases mantidos p/ retrocompat */
+  --color-gold: var(--accent);
+  --color-gold-soft: var(--accent);
+  --color-graphite: var(--titanium);
+  --color-ink: var(--carbon);
+  --color-paper: var(--clean);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --shadow-elevated:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 60px -28px rgba(0, 0, 0, 0.7),
+    0 8px 24px -16px rgba(0, 0, 0, 0.55);
+  --shadow-card:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 12px 32px -18px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 0 1px rgba(76, 193, 79, 0.35), 0 18px 60px -20px rgba(76, 193, 79, 0.45);
+
+  --gradient-hero:
+    radial-gradient(120% 80% at 80% 0%, rgba(76, 193, 79, 0.18), transparent 60%),
+    radial-gradient(80% 60% at 0% 100%, rgba(46, 159, 56, 0.12), transparent 60%),
+    linear-gradient(180deg, #0F1411 0%, #0B0F0D 100%);
+  --gradient-emerald: linear-gradient(135deg, #4CC14F 0%, #2E9F38 100%);
+
+  --animate-fade-in: fade-in 0.6s ease-out both;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-gradient: gradient-x 8s ease infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 193, 79, 0.45); }
+  50% { box-shadow: 0 0 0 12px rgba(76, 193, 79, 0); }
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* DARK FIRST — automotivo premium */
+  --background: #0F1411;
+  --foreground: #FFFFFF;
+
+  --carbon: #0F1411;
+  --premium: #171B18;
+  --titanium: #8A9290;
+  --clean: #FFFFFF;
+  --performance: #4CC14F;
+  --racing: #2E9F38;
+
+  --card: #171B18;
+  --card-foreground: #FFFFFF;
+  --popover: #171B18;
+  --popover-foreground: #FFFFFF;
+
+  /* Primary: verde performance */
+  --primary: #4CC14F;
+  --primary-foreground: #0F1411;
+
+  --secondary: #1E2421;
+  --secondary-foreground: #FFFFFF;
+
+  --muted: #1E2421;
+  --muted-foreground: #8A9290;
+
+  --accent: #4CC14F;
+  --accent-foreground: #0F1411;
+
+  --destructive: #E5484D;
+  --destructive-foreground: #FFFFFF;
+
+  --success: #4CC14F;
+  --warning: #F5A524;
+  --info: #4CB1F2;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.10);
+  --ring: #4CC14F;
+
+  --chart-1: #4CC14F;
+  --chart-2: #2E9F38;
+  --chart-3: #8A9290;
+  --chart-4: #FFFFFF;
+  --chart-5: #171B18;
+
+  --sidebar: #0B0F0D;
+  --sidebar-foreground: #E6EAE7;
+  --sidebar-primary: #4CC14F;
+  --sidebar-primary-foreground: #0F1411;
+  --sidebar-accent: #171B18;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #4CC14F;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background: var(--carbon);
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: rgba(76, 193, 79, 0.35);
+    color: #fff;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+@utility hairline {
+  border-width: 1px;
+  border-color: var(--color-border);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility text-gradient-emerald {
+  background: var(--gradient-emerald);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-hero {
+  background: var(--gradient-hero);
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility glow-ring {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    #ffffff 30%,
+    #4CC14F 50%,
+    #ffffff 70%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@utility hover-lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+}
+
+@utility story-link {
+  position: relative;
+  display: inline-block;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
