@@ -7,14 +7,14 @@ import { Instagram, Facebook, MapPin, Clock, ExternalLink } from "lucide-react";
 export const Route = createFileRoute("/_public/contato")({
   head: () => ({
     meta: [
-      { title: "Contato — Primos Automóveis" },
-      { name: "description", content: "Endereço, WhatsApp e horários da Primos Automóveis em Jaraguá do Sul." },
-      { property: "og:title", content: "Contato — Primos Automóveis" },
-      { property: "og:description", content: "Fale com a Primos Automóveis." },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/contato" },
+      { title: "Contato — Atomo Car" },
+      { name: "description", content: "Endereço, WhatsApp e horários da Atomo Car." },
+      { property: "og:title", content: "Contato — Atomo Car" },
+      { property: "og:description", content: "Fale com a Atomo Car." },
+      { property: "og:url", content: "https://atomocar.com.br/contato" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/contato" },
+      { rel: "canonical", href: "https://atomocar.com.br/contato" },
     ],
   }),
   component: ContactPage,
@@ -28,7 +28,7 @@ function ContactPage() {
           <SectionHeading
             eyebrow="Contato"
             title="Estamos prontos para falar com você."
-            subtitle="Atendimento humano, presencial ou pelo WhatsApp. Visite a loja em Jaraguá do Sul."
+            subtitle="Atendimento humano, presencial ou pelo WhatsApp."
           />
         </div>
       </div>
@@ -53,12 +53,12 @@ function ContactPage() {
           <InfoBlock
             icon={<Instagram className="h-4 w-4" />}
             title="Instagram"
-            body={<a href={mockSettings.instagram} className="inline-flex items-center gap-1 text-clean hover:text-accent">@primosautomoveis <ExternalLink className="h-3 w-3" /></a>}
+            body={<a href={mockSettings.instagram} className="inline-flex items-center gap-1 text-clean hover:text-accent">@atomocar <ExternalLink className="h-3 w-3" /></a>}
           />
           <InfoBlock
             icon={<Facebook className="h-4 w-4" />}
             title="Facebook"
-            body={<a href={mockSettings.facebook} className="inline-flex items-center gap-1 text-clean hover:text-accent">Primos Automóveis <ExternalLink className="h-3 w-3" /></a>}
+            body={<a href={mockSettings.facebook} className="inline-flex items-center gap-1 text-clean hover:text-accent">Atomo Car <ExternalLink className="h-3 w-3" /></a>}
           />
 
           <div className="rounded-xl border border-border bg-carbon p-6 text-clean">
@@ -76,7 +76,7 @@ function ContactPage() {
           <div className="overflow-hidden rounded-xl border border-border bg-muted">
             <div className="aspect-square sm:aspect-[4/5]">
               <iframe
-                title="Mapa Primos Automóveis"
+                title="Mapa Atomo Car — localização"
                 src={mockSettings.googleMapsEmbedUrl}
                 className="h-full w-full border-0"
                 loading="lazy"

@@ -79,15 +79,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Primos Automóveis — Seminovos selecionados em Jaraguá do Sul" },
+      { title: "Atomo Car — Seminovos selecionados" },
       {
         name: "description",
         content:
-          "Primos Automóveis: seminovos e usados com procedência em Jaraguá do Sul/SC. Compra, venda, troca e financiamento com atendimento transparente.",
+          "Atomo Car: seminovos e usados com procedência. Compra, venda, troca e financiamento com atendimento transparente.",
       },
-      { name: "author", content: "Primos Automóveis" },
+      { name: "author", content: "Atomo Car" },
       { name: "theme-color", content: "#0a0a0a" },
-      { property: "og:site_name", content: "Primos Automóveis" },
+      { property: "og:site_name", content: "Atomo Car" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -107,13 +107,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AutoDealer",
-          name: "Primos Automóveis",
-          url: "https://primo-auto-pro.lovable.app",
+          name: "Atomo Car",
+          url: "https://atomocar.com.br",
           areaServed: "Jaraguá do Sul, SC",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Jaraguá do Sul",
-            addressRegion: "SC",
+            addressRegion: "SP",
             addressCountry: "BR",
           },
         }),

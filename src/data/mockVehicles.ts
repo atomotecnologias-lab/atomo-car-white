@@ -44,7 +44,7 @@ function mkVehicle(
 }
 
 /**
- * Estoque real (mockado) da Primos Automóveis — fotos reais de loja.
+ * Estoque de demonstração — Atomo Car.
  */
 export const mockVehicles: Vehicle[] = [
   mkVehicle({

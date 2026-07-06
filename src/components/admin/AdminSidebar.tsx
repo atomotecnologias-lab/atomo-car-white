@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import primosLogo from "@/assets/primos-logo.png.asset.json";
+import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -108,11 +108,11 @@ function SidebarBody({
     <>
       <div className="flex h-16 items-center gap-3 border-b border-white/[0.06] px-5 lg:h-20">
         <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg bg-premium ring-1 ring-white/5">
-          <img src={primosLogo.url} alt="Primos" className="h-9 w-9 object-contain" />
+          <img src={atomoCarLogo.url} alt="Atomo Car" className="h-9 w-9 object-contain" />
         </span>
         {!collapsed && (
           <div className="leading-tight">
-            <div className="font-display text-sm font-semibold tracking-tight text-clean">Primos</div>
+            <div className="font-display text-sm font-semibold tracking-tight text-clean">Atomo Car</div>
             <div className="text-[9px] uppercase tracking-[0.28em] text-titanium">Cockpit</div>
           </div>
         )}

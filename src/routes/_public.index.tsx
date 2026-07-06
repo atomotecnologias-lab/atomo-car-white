@@ -15,22 +15,22 @@ import heroVideo from "@/assets/hero-sequence/hero.webm.asset.json";
 export const Route = createFileRoute("/_public/")({
   head: () => ({
     meta: [
-      { title: "Primos Automóveis — Seminovos e usados em Jaraguá do Sul" },
+      { title: "Atomo Car — Seminovos e usados em Jaraguá do Sul" },
       {
         name: "description",
         content:
           "Veículos selecionados, atendimento transparente e condições para compra, venda, troca e financiamento em Jaraguá do Sul.",
       },
-      { property: "og:title", content: "Primos Automóveis" },
+      { property: "og:title", content: "Atomo Car" },
       {
         property: "og:description",
         content:
           "Encontre seu próximo veículo com confiança. Procedência verificada, atendimento humano.",
       },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/" },
+      { property: "og:url", content: "https://atomocar.com.br/" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/" },
+      { rel: "canonical", href: "https://atomocar.com.br/" },
       { rel: "preload", as: "image", href: heroPoster.url, fetchPriority: "high" },
       { rel: "preload", as: "video", href: heroVideo.url, type: "video/webm" },
     ],
@@ -90,7 +90,7 @@ function HomePage() {
             <SectionHeading
               eyebrow="Venda seu veículo"
               title="Quer vender ou trocar seu carro?"
-              subtitle="A Primos compra seu veículo ou aceita como parte do pagamento. Avaliação rápida e proposta justa."
+              subtitle="A Atomo Car compra seu veículo ou aceita como parte do pagamento. Avaliação rápida e proposta justa."
             />
             <ul className="mt-6 space-y-3 text-sm text-foreground/80">
               <li className="flex gap-3">
@@ -124,7 +124,7 @@ function HomePage() {
       <section className="bg-background py-20 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-accent">
-            Sobre a Primos
+            Sobre a Atomo Car
           </div>
           <h2 className="mt-3 font-display text-3xl font-medium leading-tight text-clean sm:text-4xl">
             Confiança se constrói em cada negócio realizado.

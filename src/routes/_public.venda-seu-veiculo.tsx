@@ -11,14 +11,14 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_public/venda-seu-veiculo")({
   head: () => ({
     meta: [
-      { title: "Venda seu veículo — Primos Automóveis" },
+      { title: "Venda seu veículo — Atomo Car" },
       { name: "description", content: "Avaliação rápida do seu veículo para venda ou troca em Jaraguá do Sul." },
-      { property: "og:title", content: "Venda seu veículo — Primos Automóveis" },
+      { property: "og:title", content: "Venda seu veículo — Atomo Car" },
       { property: "og:description", content: "Compra à vista ou troca pelo veículo dos seus sonhos." },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/venda-seu-veiculo" },
+      { property: "og:url", content: "https://atomocar.com.br/venda-seu-veiculo" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/venda-seu-veiculo" },
+      { rel: "canonical", href: "https://atomocar.com.br/venda-seu-veiculo" },
     ],
   }),
   component: SellPage,
@@ -31,7 +31,7 @@ function SellPage() {
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Venda ou troca"
-            title="Quer vender seu veículo para a Primos?"
+            title="Quer vender seu veículo para a Atomo Car?"
             subtitle="Preencha os dados abaixo. Nossa equipe entra em contato para avaliação."
             align="center"
           />

@@ -22,14 +22,14 @@ export const Route = createFileRoute("/_public/estoque")({
   validateSearch: zodValidator(estoqueSearchSchema),
   head: () => ({
     meta: [
-      { title: "Estoque — Primos Automóveis" },
-      { name: "description", content: "Confira nosso estoque de seminovos e usados em Jaraguá do Sul." },
-      { property: "og:title", content: "Estoque — Primos Automóveis" },
+      { title: "Estoque — Atomo Car" },
+      { name: "description", content: "Confira nosso estoque de seminovos e usados com procedência verificada." },
+      { property: "og:title", content: "Estoque — Atomo Car" },
       { property: "og:description", content: "Veículos selecionados, prontos para visita." },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/estoque" },
+      { property: "og:url", content: "https://atomocar.com.br/estoque" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/estoque" },
+      { rel: "canonical", href: "https://atomocar.com.br/estoque" },
     ],
   }),
   component: EstoquePage,

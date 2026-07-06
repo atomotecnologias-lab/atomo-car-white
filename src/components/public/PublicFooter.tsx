@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { mockSettings } from "@/data/mockSettings";
 import { Instagram, Facebook, MapPin, Phone, Clock } from "lucide-react";
-import primosLogo from "@/assets/primos-logo.png.asset.json";
+import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 
 export function PublicFooter() {
   return (
@@ -14,12 +14,12 @@ export function PublicFooter() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-4">
             <span className="grid h-20 w-20 place-items-center overflow-hidden rounded-2xl bg-premium ring-1 ring-white/10">
-              <img src={primosLogo.url} alt="Primos Automóveis" className="h-[88%] w-[88%] object-contain" />
+              <img src={atomoCarLogo.url} alt="Atomo Car" className="h-[88%] w-[88%] object-contain" />
             </span>
             <div className="leading-tight">
-              <div className="font-display text-2xl font-semibold tracking-tight">Primos Automóveis</div>
+              <div className="font-display text-2xl font-semibold tracking-tight">Atomo Car</div>
               <div className="mt-1 text-[10px] uppercase tracking-[0.28em] text-titanium">
-                Jaraguá do Sul — SC
+                Gestão Automotiva
               </div>
             </div>
           </div>
@@ -92,8 +92,8 @@ export function PublicFooter() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-clean/50 sm:flex-row sm:px-6 lg:px-8">
-          <span>© {new Date().getFullYear()} Primos Automóveis. Todos os direitos reservados.</span>
-          <span>Jaraguá do Sul — SC</span>
+          <span>© {new Date().getFullYear()} Atomo Car. Todos os direitos reservados.</span>
+          <span>Gestão Automotiva</span>
         </div>
       </div>
     </footer>

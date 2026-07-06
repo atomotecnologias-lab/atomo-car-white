@@ -11,7 +11,7 @@ export function ContactCTA() {
               Atendimento direto
             </div>
             <h2 className="mt-3 font-display text-3xl font-medium leading-tight sm:text-4xl">
-              Fale com a equipe Primos sobre o veículo que você procura.
+              Fale com a equipe Atomo Car sobre o veículo que você procura.
             </h2>
             <p className="mt-4 font-display text-base font-light leading-relaxed tracking-tight text-clean/75">
               Respondemos no WhatsApp em horário comercial e ajudamos com

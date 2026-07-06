@@ -4,12 +4,12 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 export const Route = createFileRoute("/_public/politica-de-privacidade")({
   head: () => ({
     meta: [
-      { title: "Política de privacidade — Primos Automóveis" },
-      { name: "description", content: "Como tratamos seus dados na Primos Automóveis." },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/politica-de-privacidade" },
+      { title: "Política de privacidade — Atomo Car" },
+      { name: "description", content: "Como tratamos seus dados na Atomo Car." },
+      { property: "og:url", content: "https://atomocar.com.br/politica-de-privacidade" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/politica-de-privacidade" },
+      { rel: "canonical", href: "https://atomocar.com.br/politica-de-privacidade" },
     ],
   }),
   component: PrivacyPage,

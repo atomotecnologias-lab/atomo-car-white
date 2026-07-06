@@ -2,11 +2,11 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
-import primosLogo from '@/assets/primos-logo.png.asset.json'
+import atomoCarLogo from '@/assets/atomo-car-logo.svg.asset.json'
 
 export const Route = createFileRoute('/login')({
   head: () => ({
-    meta: [{ title: 'Login — Primos Cockpit' }, { name: 'robots', content: 'noindex' }],
+    meta: [{ title: 'Login — Atomo Car Cockpit' }, { name: 'robots', content: 'noindex' }],
   }),
   component: LoginPage,
 })
@@ -56,10 +56,10 @@ function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-3">
           <span className="grid h-14 w-14 place-items-center overflow-hidden rounded-xl bg-premium ring-1 ring-white/10">
-            <img src={primosLogo.url} alt="Primos" className="h-12 w-12 object-contain" />
+            <img src={atomoCarLogo.url} alt="Atomo Car" className="h-12 w-12 object-contain" />
           </span>
           <div className="text-center">
-            <h1 className="font-display text-xl font-semibold text-clean">Primos Cockpit</h1>
+            <h1 className="font-display text-xl font-semibold text-clean">Atomo Car Cockpit</h1>
             <p className="mt-1 text-sm text-titanium">Acesse o painel de operações</p>
           </div>
         </div>

@@ -7,21 +7,21 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_public/sobre")({
   head: () => ({
     meta: [
-      { title: "Sobre a Primos Automóveis — Confiança e procedência em Jaraguá do Sul" },
+      { title: "Sobre a Atomo Car — Confiança e procedência em Jaraguá do Sul" },
       {
         name: "description",
         content:
-          "Desde 2018 a Primos Automóveis constrói confiança em cada negociação, com veículos de procedência e atendimento próximo em Jaraguá do Sul, SC.",
+          "Desde 2018 a Atomo Car constrói confiança em cada negociação, com veículos de procedência e atendimento próximo em Jaraguá do Sul, SC.",
       },
-      { property: "og:title", content: "Sobre a Primos Automóveis" },
+      { property: "og:title", content: "Sobre a Atomo Car" },
       {
         property: "og:description",
         content: "Confiança em cada negociação. Veículos selecionados, atendimento próximo e transparência.",
       },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/sobre" },
+      { property: "og:url", content: "https://atomocar.com.br/sobre" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/sobre" },
+      { rel: "canonical", href: "https://atomocar.com.br/sobre" },
     ],
   }),
   component: AboutPage,
@@ -51,7 +51,7 @@ function AboutPage() {
             {/* LEFT */}
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-clean/90 backdrop-blur">
-                Sobre a Primos
+                Sobre a Atomo Car
               </div>
 
               <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-clean sm:text-5xl lg:text-[3.25rem]">
@@ -61,7 +61,7 @@ function AboutPage() {
 
               <div className="mt-7 space-y-5 font-display text-base font-light leading-relaxed text-clean/80 sm:text-lg">
                 <p>
-                  A Primos Automóveis nasceu em Jaraguá do Sul com um propósito simples:
+                  A Atomo Car nasceu em Jaraguá do Sul com um propósito simples:
                   oferecer veículos de qualidade através de negociações transparentes e
                   atendimento próximo.
                 </p>
@@ -109,7 +109,7 @@ function AboutPage() {
                     <iframe
                       src={reelUrl}
                       className="absolute inset-0 h-full w-full"
-                      title="Vídeo institucional Primos Automóveis"
+                      title="Vídeo institucional Atomo Car"
                       allow="autoplay; encrypted-media; picture-in-picture"
                       allowFullScreen
                     />
@@ -117,7 +117,7 @@ function AboutPage() {
                     <button
                       type="button"
                       onClick={() => setPlaying(true)}
-                      aria-label="Reproduzir vídeo institucional da Primos Automóveis"
+                      aria-label="Reproduzir vídeo institucional da Atomo Car"
                       className="group absolute inset-0 flex items-center justify-center bg-gradient-to-br from-carbon via-carbon/90 to-black"
                     >
                       <iframe
@@ -136,7 +136,7 @@ function AboutPage() {
                           Vídeo institucional
                         </span>
                         <span className="mt-1 block font-display text-lg font-medium text-clean">
-                          Conheça a Primos Automóveis
+                          Conheça a Atomo Car
                         </span>
                       </span>
                     </button>

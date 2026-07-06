@@ -19,10 +19,10 @@ export const Route = createFileRoute("/_public/veiculo/$slug")({
   },
   head: ({ loaderData, params }) => {
     const v = loaderData?.vehicle;
-    if (!v) return { meta: [{ title: "Veículo — Primos Automóveis" }] };
-    const title = `${v.brand} ${v.model} ${v.version} ${formatYear(v.yearManufacture, v.yearModel)} — Primos Automóveis`;
+    if (!v) return { meta: [{ title: "Veículo — Atomo Car" }] };
+    const title = `${v.brand} ${v.model} ${v.version} ${formatYear(v.yearManufacture, v.yearModel)} — Atomo Car`;
     const description = `${v.brand} ${v.model} ${v.version} ${formatYear(v.yearManufacture, v.yearModel)}, ${formatKm(v.mileage)}, ${v.color}. ${formatBRL(v.price)}.`;
-    const url = `https://primo-auto-pro.lovable.app/veiculo/${params.slug}`;
+    const url = `https://atomocar.com.br/veiculo/${params.slug}`;
     return {
       meta: [
         { title },

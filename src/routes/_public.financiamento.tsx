@@ -10,14 +10,14 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_public/financiamento")({
   head: () => ({
     meta: [
-      { title: "Financiamento — Primos Automóveis" },
-      { name: "description", content: "Auxiliamos no financiamento do seu próximo veículo em Jaraguá do Sul." },
-      { property: "og:title", content: "Financiamento — Primos Automóveis" },
+      { title: "Financiamento — Atomo Car" },
+      { name: "description", content: "Auxiliamos no financiamento do seu próximo veículo com as melhores condições." },
+      { property: "og:title", content: "Financiamento — Atomo Car" },
       { property: "og:description", content: "Trabalhamos com diversos bancos para encontrar a melhor condição." },
-      { property: "og:url", content: "https://primo-auto-pro.lovable.app/financiamento" },
+      { property: "og:url", content: "https://atomocar.com.br/financiamento" },
     ],
     links: [
-      { rel: "canonical", href: "https://primo-auto-pro.lovable.app/financiamento" },
+      { rel: "canonical", href: "https://atomocar.com.br/financiamento" },
     ],
   }),
   component: FinancingPage,

@@ -2,7 +2,7 @@ import { Search, Bell, ExternalLink, Menu } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminMobileDrawer } from "./AdminSidebar";
-import primosLogo from "@/assets/primos-logo.png.asset.json";
+import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 
 export function AdminTopbar({
   title,
@@ -28,7 +28,7 @@ export function AdminTopbar({
           <Menu className="h-4 w-4" />
         </button>
         <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-md bg-premium ring-1 ring-white/5 lg:hidden">
-          <img src={primosLogo.url} alt="Primos" className="h-8 w-8 object-contain" />
+          <img src={atomoCarLogo.url} alt="Atomo Car" className="h-8 w-8 object-contain" />
         </span>
 
         <div className="min-w-0 flex-1">

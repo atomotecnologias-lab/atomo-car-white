@@ -87,7 +87,7 @@ function DashboardPage() {
   return (
     <>
       <AdminTopbar
-        title="Primos Central de Operações e Inteligência"
+        title="Atomo Car — Central de Operações"
         subtitle="Estoque, leads e ações da IA em um só lugar."
         actions={
           <div className="flex items-center gap-2">

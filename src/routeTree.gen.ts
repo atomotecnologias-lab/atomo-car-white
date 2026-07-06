@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as DemoAzulRouteImport } from './routes/demo-azul'
+import { Route as ApresentacaoRouteImport } from './routes/apresentacao'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -43,6 +45,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoAzulRoute = DemoAzulRouteImport.update({
+  id: '/demo-azul',
+  path: '/demo-azul',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApresentacaoRoute = ApresentacaoRouteImport.update({
+  id: '/apresentacao',
+  path: '/apresentacao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -165,6 +177,8 @@ const PublicVeiculoSlugRoute = PublicVeiculoSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/apresentacao': typeof ApresentacaoRoute
+  '/demo-azul': typeof DemoAzulRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contato': typeof PublicContatoRoute
@@ -189,6 +203,8 @@ export interface FileRoutesByFullPath {
   '/admin/veiculos/': typeof AdminVeiculosIndexRoute
 }
 export interface FileRoutesByTo {
+  '/apresentacao': typeof ApresentacaoRoute
+  '/demo-azul': typeof DemoAzulRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contato': typeof PublicContatoRoute
@@ -217,6 +233,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_public': typeof PublicRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
+  '/apresentacao': typeof ApresentacaoRoute
+  '/demo-azul': typeof DemoAzulRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_public/contato': typeof PublicContatoRoute
@@ -246,6 +264,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/apresentacao'
+    | '/demo-azul'
     | '/login'
     | '/sitemap.xml'
     | '/contato'
@@ -270,6 +290,8 @@ export interface FileRouteTypes {
     | '/admin/veiculos/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/apresentacao'
+    | '/demo-azul'
     | '/login'
     | '/sitemap.xml'
     | '/contato'
@@ -297,6 +319,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_public'
     | '/admin'
+    | '/apresentacao'
+    | '/demo-azul'
     | '/login'
     | '/sitemap.xml'
     | '/_public/contato'
@@ -325,6 +349,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
+  ApresentacaoRoute: typeof ApresentacaoRoute
+  DemoAzulRoute: typeof DemoAzulRoute
   LoginRoute: typeof LoginRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
@@ -343,6 +369,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo-azul': {
+      id: '/demo-azul'
+      path: '/demo-azul'
+      fullPath: '/demo-azul'
+      preLoaderRoute: typeof DemoAzulRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apresentacao': {
+      id: '/apresentacao'
+      path: '/apresentacao'
+      fullPath: '/apresentacao'
+      preLoaderRoute: typeof ApresentacaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -571,6 +611,8 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
+  ApresentacaoRoute: ApresentacaoRoute,
+  DemoAzulRoute: DemoAzulRoute,
   LoginRoute: LoginRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }

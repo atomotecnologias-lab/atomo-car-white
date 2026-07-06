@@ -23,7 +23,7 @@ export function BrandStatement() {
     <section
       ref={ref}
       className="relative isolate overflow-hidden bg-premium py-24 sm:py-32"
-      aria-label="Primos Automóveis"
+      aria-label="Atomo Car"
     >
       <div
         aria-hidden
@@ -48,7 +48,7 @@ export function BrandStatement() {
           className="block font-display font-semibold leading-none tracking-[-0.04em] text-clean/[0.055]"
           style={{ fontSize: "clamp(80px, 14vw, 220px)" }}
         >
-          PRIMOS
+          ATOMO
         </span>
       </div>
 

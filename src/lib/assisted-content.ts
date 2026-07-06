@@ -1,6 +1,7 @@
 import type { Vehicle } from "@/types";
 import type { AssistedContent } from "@/types/content";
 import { formatBRL, formatKm, formatYear, fuelLabel, transmissionLabel } from "./format";
+import { brand } from "@/config/brand";
 
 /**
  * Templates determinísticos. Não é IA — é geração assistida baseada
@@ -15,7 +16,7 @@ export function generateAssistedContent(v: Vehicle): AssistedContent[] {
   const fuel = fuelLabel(v.fuel);
 
   const topFeatures = v.features.slice(0, 5).join(" • ");
-  const hashtags = `#PrimosAutomoveis #JaraguaDoSul #${v.brand.replace(/\s+/g, "")} #${v.model.replace(/\s+/g, "")} #Seminovos`;
+  const hashtags = `${brand.hashtags.join(" ")} #${v.brand.replace(/\s+/g, "")} #${v.model.replace(/\s+/g, "")}`;
 
   return [
     {
@@ -27,25 +28,25 @@ export function generateAssistedContent(v: Vehicle): AssistedContent[] {
     {
       channel: "site_short",
       label: "Descrição curta",
-      text: `${fullName} ${year} ${v.color}, ${trans}, ${fuel}, ${km}. Procedência verificada na Primos Automóveis.`,
+      text: `${fullName} ${year} ${v.color}, ${trans}, ${fuel}, ${km}. Procedência verificada na ${brand.name}.`,
       approved: false,
     },
     {
       channel: "site_full",
       label: "Descrição completa",
-      text: `${fullName} ${year} na cor ${v.color}, câmbio ${trans.toLowerCase()}, motorização ${fuel.toLowerCase()}, com ${km}. Veículo selecionado pela Primos Automóveis em Jaraguá do Sul, com procedência verificada e laudo cautelar disponível.\n\nPrincipais itens: ${topFeatures || "diversos opcionais"}.\n\nAceitamos seu veículo na troca e auxiliamos no financiamento.`,
+      text: `${fullName} ${year} na cor ${v.color}, câmbio ${trans.toLowerCase()}, motorização ${fuel.toLowerCase()}, com ${km}. Veículo selecionado pela ${brand.name} com procedência verificada e laudo cautelar disponível.\n\nPrincipais itens: ${topFeatures || "diversos opcionais"}.\n\nAceitamos seu veículo na troca e auxiliamos no financiamento.`,
       approved: false,
     },
     {
       channel: "seo_title",
       label: "Título SEO",
-      text: `${fullName} ${year} ${v.color} — ${price} | Primos Automóveis Jaraguá do Sul`,
+      text: `${fullName} ${year} ${v.color} — ${price} | ${brand.name}`,
       approved: false,
     },
     {
       channel: "seo_description",
       label: "Descrição SEO",
-      text: `${fullName} ${year}, ${km}, ${trans}, ${fuel}, ${v.color}. ${price}. Procedência verificada na Primos Automóveis em Jaraguá do Sul - SC.`,
+      text: `${fullName} ${year}, ${km}, ${trans}, ${fuel}, ${v.color}. ${price}. Procedência verificada na ${brand.name}.`,
       approved: false,
     },
     {
@@ -57,7 +58,7 @@ export function generateAssistedContent(v: Vehicle): AssistedContent[] {
     {
       channel: "facebook",
       label: "Texto para Facebook",
-      text: `${fullName} ${year} disponível na Primos Automóveis.\n\n${km} • ${trans} • ${fuel} • ${v.color}\n${topFeatures ? `Itens: ${topFeatures}.` : ""}\n\nValor: ${price}.\n\nFinanciamos e aceitamos seu veículo na troca. Chame no WhatsApp.`,
+      text: `${fullName} ${year} disponível na ${brand.name}.\n\n${km} • ${trans} • ${fuel} • ${v.color}\n${topFeatures ? `Itens: ${topFeatures}.` : ""}\n\nValor: ${price}.\n\nFinanciamos e aceitamos seu veículo na troca. Chame no WhatsApp.`,
       approved: false,
     },
     {
@@ -75,7 +76,7 @@ export function generateAssistedContent(v: Vehicle): AssistedContent[] {
     {
       channel: "webmotors",
       label: "Texto para Webmotors",
-      text: `${fullName} ${year} • ${km} • ${trans} • ${fuel} • ${v.color}. Itens: ${topFeatures || "diversos"}. Procedência Primos Automóveis.`,
+      text: `${fullName} ${year} • ${km} • ${trans} • ${fuel} • ${v.color}. Itens: ${topFeatures || "diversos"}. Procedência ${brand.name}.`,
       approved: false,
     },
     {
@@ -87,7 +88,7 @@ export function generateAssistedContent(v: Vehicle): AssistedContent[] {
     {
       channel: "selling_points",
       label: "Argumentos comerciais",
-      text: `• Procedência verificada\n• Revisado pela equipe Primos\n• Aceita troca\n• Financiamento facilitado\n• Atendimento em Jaraguá do Sul`,
+      text: `• Procedência verificada\n• Revisado pela equipe ${brand.name}\n• Aceita troca\n• Financiamento facilitado\n• Atendimento dedicado`,
       approved: false,
     },
     {

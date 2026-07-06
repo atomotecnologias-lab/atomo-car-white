@@ -12,7 +12,7 @@ export const Route = createFileRoute("/admin")({
     }
   },
   head: () => ({
-    meta: [{ title: "Primos Central de Operações e Inteligência" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Atomo Car — Central de Operações" }, { name: "robots", content: "noindex" }],
   }),
   component: AdminLayout,
 });

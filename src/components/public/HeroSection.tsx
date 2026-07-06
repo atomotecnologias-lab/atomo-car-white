@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { WhatsappButton } from "@/components/shared/WhatsappButton";
 import { ArrowRight, ShieldCheck, BadgeCheck, Sparkles } from "lucide-react";
-import primosLogo from "@/assets/primos-logo.png.asset.json";
+import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 
 export function HeroSection() {
   return (
