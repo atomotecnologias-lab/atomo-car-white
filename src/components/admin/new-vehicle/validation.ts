@@ -30,6 +30,8 @@ export function validateAll(f: FormState) {
   if (!f.color.trim()) errs.specs.push("Informe a cor");
 
   if (!f.price || Number(f.price) <= 0) errs.price.push("Informe um preço válido");
+  if (!f.acquisitionPrice || Number(String(f.acquisitionPrice).replace(/[^\d]/g, "")) <= 0)
+    errs.price.push("Informe o valor de aquisição — base do lucro real");
 
   const requiredFilled = PHOTO_SLOTS.filter(
     (s) => s.group === "required" && f.photos[s.key],

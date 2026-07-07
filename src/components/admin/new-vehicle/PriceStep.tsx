@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Loader2, Sparkles, Star } from "lucide-react";
+import { Loader2, Sparkles, Star, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatBRL } from "@/lib/format";
 import { suggestPrice, type PriceResult } from "@/lib/ai";
-import type { VehicleStatus } from "@/types";
+import type { AcquisitionSource, VehicleStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { ChoiceGroup, Field, inputCls } from "./fields";
 import type { StepProps } from "./types";
 
 export function PriceStep({ form, set }: StepProps) {
   const priceNum = Number(String(form.price).replace(/[^\d]/g, "") || 0);
+  const acquisitionNum = Number(String(form.acquisitionPrice).replace(/[^\d]/g, "") || 0);
+  const projectedMargin = priceNum > 0 && acquisitionNum > 0 ? priceNum - acquisitionNum : null;
   const [loading, setLoading] = useState(false);
   const [suggestion, setSuggestion] = useState<PriceResult | null>(null);
   const canSuggest = Boolean(form.brand && form.model && form.yearModel);
@@ -105,6 +107,66 @@ export function PriceStep({ form, set }: StepProps) {
           )}
         </div>
       </Field>
+      {/* Entrada na loja — alimenta custos e lucro real */}
+      <div className="md:col-span-2 rounded-xl border border-white/[0.06] bg-carbon/40 p-4">
+        <div className="mb-3 flex items-center gap-2">
+          <Wallet className="h-4 w-4 text-performance" />
+          <span className="font-display text-sm font-semibold text-clean">Entrada na loja</span>
+          <span className="text-[10px] uppercase tracking-[0.14em] text-titanium">
+            base do lucro real
+          </span>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Valor de aquisição (R$)" required>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 font-display text-sm text-titanium">
+                R$
+              </span>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={form.acquisitionPrice}
+                onChange={(e) => set("acquisitionPrice", e.target.value)}
+                className={cn(inputCls, "pl-11 tabular")}
+                placeholder="75000"
+              />
+            </div>
+            {projectedMargin !== null && (
+              <p className="mt-2 text-xs text-titanium">
+                Margem antes dos custos:{" "}
+                <span
+                  className={cn(
+                    "font-display",
+                    projectedMargin >= 0 ? "text-performance" : "text-destructive",
+                  )}
+                >
+                  {formatBRL(projectedMargin)}
+                </span>
+              </p>
+            )}
+          </Field>
+          <Field label="Data de entrada">
+            <input
+              type="date"
+              value={form.acquiredAt}
+              onChange={(e) => set("acquiredAt", e.target.value)}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="Origem do veículo" className="sm:col-span-2">
+            <ChoiceGroup
+              value={form.acquisitionSource}
+              onChange={(v) => set("acquisitionSource", v as AcquisitionSource)}
+              options={[
+                { value: "own_purchase", label: "Compra própria" },
+                { value: "consignment", label: "Consignação" },
+                { value: "trade_in", label: "Troca" },
+              ]}
+            />
+          </Field>
+        </div>
+      </div>
+
       <Field label="Status inicial" required>
         <ChoiceGroup
           value={form.status}

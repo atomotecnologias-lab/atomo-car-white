@@ -9,6 +9,12 @@ export type VehicleStatus =
   | "sold"
   | "inactive";
 
+/** Origem da entrada do veículo na loja. */
+export type AcquisitionSource = "own_purchase" | "consignment" | "trade_in";
+
+/** Fase de preparação interna — eixo ortogonal ao status comercial. */
+export type PreparationStatus = "none" | "in_preparation" | "ready";
+
 export type PhotoSlotKey =
   // required
   | "front"
@@ -74,6 +80,9 @@ export interface Vehicle {
   mainImage: string;
   images: VehicleImage[];
   qualityScore: number;
+  acquiredAt?: string;
+  acquisitionSource: AcquisitionSource;
+  preparationStatus: PreparationStatus;
   createdAt: string;
   updatedAt: string;
 }

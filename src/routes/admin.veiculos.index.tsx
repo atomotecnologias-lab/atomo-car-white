@@ -6,8 +6,9 @@ import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { VehicleStatusBadge } from "@/components/admin/VehicleStatusBadge";
 import { QualityScoreRing } from "@/components/admin/QualityScoreRing";
 import { formatBRL, formatKm, formatYear } from "@/lib/format";
+import { agingTone, daysInStock } from "@/lib/aging";
 
-import { PlusCircle, Search, ArrowUpRight, Filter, Users, Share2, Calendar, X } from "lucide-react";
+import { PlusCircle, Search, ArrowUpRight, Filter, Share2, Calendar, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { VehicleStatus } from "@/types";
 
@@ -25,11 +26,6 @@ const CHANNELS = ["Site", "Instagram", "Marketplace", "Google", "OLX"];
 function pseudoChannels(id: string): string[] {
   const h = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
   return CHANNELS.filter((_, i) => ((h >> i) & 1) === 1);
-}
-
-function pseudoLeads(id: string): number {
-  const h = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-  return h % 11;
 }
 
 export const Route = createFileRoute("/admin/veiculos/")({
@@ -149,8 +145,8 @@ function VehiclesAdminPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {filtered.map((v) => {
               const channels = pseudoChannels(v.id);
-              const leads = pseudoLeads(v.id);
-              const days = Math.floor((Date.now() - new Date(v.createdAt).getTime()) / 86400000);
+              const days = daysInStock(v);
+              const tone = agingTone(days);
               return (
                 <Link
                   key={v.id}
@@ -191,24 +187,23 @@ function VehiclesAdminPage() {
                       <span className="opacity-50">•</span>
                       <span>{formatKm(v.mileage)}</span>
                       <span className="opacity-50">•</span>
-                      <span className="inline-flex items-center gap-1">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1",
+                          tone === "attention" && "text-warning",
+                          tone === "warning" && "text-warning",
+                          tone === "critical" && "font-medium text-destructive",
+                        )}
+                      >
                         <Calendar className="h-3 w-3" />
                         {days}d
                       </span>
                     </div>
 
-                    <div className="flex items-end justify-between border-t border-white/[0.04] pt-3">
-                      <div>
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-titanium">Preço</div>
-                        <div className="font-display text-lg font-semibold text-clean tabular">
-                          {formatBRL(v.price)}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="inline-flex items-center gap-1 text-[11px] text-titanium tabular">
-                          <Users className="h-3 w-3" />
-                          {leads} {leads === 1 ? "lead" : "leads"}
-                        </div>
+                    <div className="border-t border-white/[0.04] pt-3">
+                      <div className="text-[10px] uppercase tracking-[0.14em] text-titanium">Preço</div>
+                      <div className="font-display text-lg font-semibold text-clean tabular">
+                        {formatBRL(v.price)}
                       </div>
                     </div>
 

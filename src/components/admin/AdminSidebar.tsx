@@ -2,7 +2,6 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Car,
-  Users,
   Settings,
   Sparkles,
   ChevronLeft,
@@ -13,12 +12,16 @@ import {
   PlusCircle,
   Wrench,
   ShieldCheck,
-  KanbanSquare,
-  MessageSquare,
-  History,
   Send,
   LogOut,
   X,
+  HandCoins,
+  Receipt,
+  Percent,
+  Wallet,
+  ArrowUpRight,
+  ArrowDownLeft,
+  CircleDollarSign,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
@@ -40,19 +43,31 @@ const groups: Group[] = [
     children: [
       { to: "/admin/veiculos", label: "Estoque", icon: Warehouse, exact: true },
       { to: "/admin/veiculos/novo", label: "Novo veículo", icon: PlusCircle },
-      { to: "/admin/veiculos/producao", label: "Em produção", icon: Wrench },
+      { to: "/admin/veiculos/producao", label: "Preparação", icon: Wrench },
       { to: "/admin/veiculos/qualidade", label: "Qualidade", icon: ShieldCheck },
     ],
   },
   {
-    id: "leads",
-    label: "Leads",
-    icon: Users,
-    basePath: "/admin/leads",
+    id: "sales",
+    label: "Vendas",
+    icon: HandCoins,
+    basePath: "/admin/vendas",
     children: [
-      { to: "/admin/leads", label: "Pipeline", icon: KanbanSquare, exact: true },
-      { to: "/admin/leads/atendimentos", label: "Atendimentos", icon: MessageSquare },
-      { to: "/admin/leads/historico", label: "Histórico", icon: History },
+      { to: "/admin/vendas", label: "Vendas realizadas", icon: Receipt, exact: true },
+      { to: "/admin/vendas/nova", label: "Registrar venda", icon: PlusCircle },
+      { to: "/admin/vendas/comissoes", label: "Comissões", icon: Percent },
+    ],
+  },
+  {
+    id: "finance",
+    label: "Financeiro",
+    icon: Wallet,
+    basePath: "/admin/financeiro",
+    children: [
+      { to: "/admin/financeiro", label: "Visão geral", icon: CircleDollarSign, exact: true },
+      { to: "/admin/financeiro/pagar", label: "A pagar", icon: ArrowUpRight },
+      { to: "/admin/financeiro/receber", label: "A receber", icon: ArrowDownLeft },
+      { to: "/admin/financeiro/custos", label: "Custos por veículo", icon: Wrench },
     ],
   },
   {
@@ -72,6 +87,9 @@ const footerItems: Item[] = [
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
 
+/** Grupos visíveis ao vendedor (o resto é exclusivo do dono). */
+const SELLER_GROUP_IDS = new Set(["vehicles"]);
+
 export function useIsItemActive(pathname: string) {
   return (it: Item) => (it.exact ? pathname === it.to : pathname === it.to || pathname.startsWith(it.to + "/"));
 }
@@ -88,7 +106,7 @@ function SidebarBody({
   onToggleCollapse?: () => void;
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { signOut, user } = useAuth();
+  const { signOut, user, role, member } = useAuth();
   const navigate = useNavigate();
 
   async function handleSignOut() {
@@ -96,6 +114,9 @@ function SidebarBody({
     navigate({ to: "/login" });
   }
   const isItemActive = useIsItemActive(pathname);
+
+  const visibleGroups = role === "owner" ? groups : groups.filter((g) => SELLER_GROUP_IDS.has(g.id));
+  const visibleFooter = role === "owner" ? footerItems : [];
 
   const initialOpen = useMemo(() => {
     const o: Record<string, boolean> = {};
@@ -121,7 +142,7 @@ function SidebarBody({
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-5">
         <NavLeaf item={dashboard} active={isItemActive(dashboard)} collapsed={collapsed} onNavigate={onNavigate} />
 
-        {groups.map((g) => {
+        {visibleGroups.map((g) => {
           const groupActive = pathname.startsWith(g.basePath);
           const isOpen = collapsed ? false : open[g.id] ?? groupActive;
           const Icon = g.icon;
@@ -179,7 +200,7 @@ function SidebarBody({
         })}
 
         <div className="pt-3">
-          {footerItems.map((it) => (
+          {visibleFooter.map((it) => (
             <NavLeaf key={it.to} item={it} active={isItemActive(it)} collapsed={collapsed} onNavigate={onNavigate} />
           ))}
         </div>
@@ -201,8 +222,12 @@ function SidebarBody({
               {user?.email?.[0]?.toUpperCase() ?? 'A'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-clean">{user?.email ?? 'Admin'}</p>
-              <p className="text-[10px] text-titanium">Administrador</p>
+              <p className="truncate text-xs font-medium text-clean">
+                {member?.name ?? user?.email ?? 'Admin'}
+              </p>
+              <p className="text-[10px] text-titanium">
+                {role === 'owner' ? 'Dono da loja' : 'Vendedor'}
+              </p>
             </div>
             <button
               type="button"
@@ -237,7 +262,7 @@ export function AdminSidebar() {
   return (
     <aside
       className={cn(
-        "sticky top-0 hidden h-screen shrink-0 flex-col border-r border-white/[0.06] bg-[#0B0F0D] text-clean transition-[width] duration-300 lg:flex",
+        "admin-dark sticky top-0 hidden h-screen shrink-0 flex-col border-r border-white/[0.06] bg-[#0B0F0D] text-clean transition-[width] duration-300 lg:flex",
         collapsed ? "w-[72px]" : "w-[260px]",
       )}
     >
@@ -293,7 +318,7 @@ export function AdminMobileDrawer({ open, onClose }: { open: boolean; onClose: (
         aria-modal="true"
         aria-label="Menu do cockpit"
         className={cn(
-          "absolute inset-y-0 left-0 flex w-[82vw] max-w-[300px] flex-col border-r border-white/[0.06] bg-[#0B0F0D] text-clean shadow-2xl transition-transform duration-300",
+          "admin-dark absolute inset-y-0 left-0 flex w-[82vw] max-w-[300px] flex-col border-r border-white/[0.06] bg-[#0B0F0D] text-clean shadow-2xl transition-transform duration-300",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >

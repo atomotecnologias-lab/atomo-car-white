@@ -23,6 +23,7 @@ import { ContentStep } from "@/components/admin/new-vehicle/ContentStep";
 import { ReviewStep } from "@/components/admin/new-vehicle/ReviewStep";
 import { createVehicle } from "@/services/vehiclesService";
 import { saveVehicleImages } from "@/services/imageService";
+import { upsertAcquisition } from "@/services/costsService";
 import type { PhotoSlotKey } from "@/types";
 
 function parsePrice(raw: string): number {
@@ -90,7 +91,17 @@ function NewVehiclePage() {
           status: form.status,
           isFeatured: form.isFeatured,
           features: form.features,
+          acquiredAt: form.acquiredAt || undefined,
+          acquisitionSource: form.acquisitionSource,
         });
+
+        const acquisitionPrice = parsePrice(form.acquisitionPrice);
+        if (acquisitionPrice > 0) {
+          await upsertAcquisition({
+            vehicleId: vehicle.id,
+            acquisitionPrice,
+          });
+        }
 
         const photoEntries = Object.entries(form.photoFiles) as [PhotoSlotKey, File][];
         if (photoEntries.length > 0) {

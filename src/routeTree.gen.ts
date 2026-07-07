@@ -25,16 +25,20 @@ import { Route as PublicPoliticaDePrivacidadeRouteImport } from './routes/_publi
 import { Route as PublicFinanciamentoRouteImport } from './routes/_public.financiamento'
 import { Route as PublicEstoqueRouteImport } from './routes/_public.estoque'
 import { Route as PublicContatoRouteImport } from './routes/_public.contato'
+import { Route as AdminVendasIndexRouteImport } from './routes/admin.vendas.index'
 import { Route as AdminVeiculosIndexRouteImport } from './routes/admin.veiculos.index'
-import { Route as AdminLeadsIndexRouteImport } from './routes/admin.leads.index'
+import { Route as AdminFinanceiroIndexRouteImport } from './routes/admin.financeiro.index'
+import { Route as AdminVendasNovaRouteImport } from './routes/admin.vendas.nova'
+import { Route as AdminVendasComissoesRouteImport } from './routes/admin.vendas.comissoes'
 import { Route as AdminVeiculosQualidadeRouteImport } from './routes/admin.veiculos.qualidade'
 import { Route as AdminVeiculosProducaoRouteImport } from './routes/admin.veiculos.producao'
 import { Route as AdminVeiculosNovoRouteImport } from './routes/admin.veiculos.novo'
 import { Route as AdminVeiculosIdRouteImport } from './routes/admin.veiculos.$id'
 import { Route as AdminMarketingPublicacoesRouteImport } from './routes/admin.marketing.publicacoes'
 import { Route as AdminMarketingConteudoRouteImport } from './routes/admin.marketing.conteudo'
-import { Route as AdminLeadsHistoricoRouteImport } from './routes/admin.leads.historico'
-import { Route as AdminLeadsAtendimentosRouteImport } from './routes/admin.leads.atendimentos'
+import { Route as AdminFinanceiroReceberRouteImport } from './routes/admin.financeiro.receber'
+import { Route as AdminFinanceiroPagarRouteImport } from './routes/admin.financeiro.pagar'
+import { Route as AdminFinanceiroCustosRouteImport } from './routes/admin.financeiro.custos'
 import { Route as PublicVeiculoSlugRouteImport } from './routes/_public.veiculo.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -117,14 +121,29 @@ const PublicContatoRoute = PublicContatoRouteImport.update({
   path: '/contato',
   getParentRoute: () => PublicRoute,
 } as any)
+const AdminVendasIndexRoute = AdminVendasIndexRouteImport.update({
+  id: '/vendas/',
+  path: '/vendas/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminVeiculosIndexRoute = AdminVeiculosIndexRouteImport.update({
   id: '/veiculos/',
   path: '/veiculos/',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminLeadsIndexRoute = AdminLeadsIndexRouteImport.update({
-  id: '/leads/',
-  path: '/leads/',
+const AdminFinanceiroIndexRoute = AdminFinanceiroIndexRouteImport.update({
+  id: '/financeiro/',
+  path: '/financeiro/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVendasNovaRoute = AdminVendasNovaRouteImport.update({
+  id: '/vendas/nova',
+  path: '/vendas/nova',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVendasComissoesRoute = AdminVendasComissoesRouteImport.update({
+  id: '/vendas/comissoes',
+  path: '/vendas/comissoes',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminVeiculosQualidadeRoute = AdminVeiculosQualidadeRouteImport.update({
@@ -158,14 +177,19 @@ const AdminMarketingConteudoRoute = AdminMarketingConteudoRouteImport.update({
   path: '/marketing/conteudo',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminLeadsHistoricoRoute = AdminLeadsHistoricoRouteImport.update({
-  id: '/leads/historico',
-  path: '/leads/historico',
+const AdminFinanceiroReceberRoute = AdminFinanceiroReceberRouteImport.update({
+  id: '/financeiro/receber',
+  path: '/financeiro/receber',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminLeadsAtendimentosRoute = AdminLeadsAtendimentosRouteImport.update({
-  id: '/leads/atendimentos',
-  path: '/leads/atendimentos',
+const AdminFinanceiroPagarRoute = AdminFinanceiroPagarRouteImport.update({
+  id: '/financeiro/pagar',
+  path: '/financeiro/pagar',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFinanceiroCustosRoute = AdminFinanceiroCustosRouteImport.update({
+  id: '/financeiro/custos',
+  path: '/financeiro/custos',
   getParentRoute: () => AdminRoute,
 } as any)
 const PublicVeiculoSlugRoute = PublicVeiculoSlugRouteImport.update({
@@ -191,16 +215,20 @@ export interface FileRoutesByFullPath {
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/admin/': typeof AdminIndexRoute
   '/veiculo/$slug': typeof PublicVeiculoSlugRoute
-  '/admin/leads/atendimentos': typeof AdminLeadsAtendimentosRoute
-  '/admin/leads/historico': typeof AdminLeadsHistoricoRoute
+  '/admin/financeiro/custos': typeof AdminFinanceiroCustosRoute
+  '/admin/financeiro/pagar': typeof AdminFinanceiroPagarRoute
+  '/admin/financeiro/receber': typeof AdminFinanceiroReceberRoute
   '/admin/marketing/conteudo': typeof AdminMarketingConteudoRoute
   '/admin/marketing/publicacoes': typeof AdminMarketingPublicacoesRoute
   '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
   '/admin/veiculos/novo': typeof AdminVeiculosNovoRoute
   '/admin/veiculos/producao': typeof AdminVeiculosProducaoRoute
   '/admin/veiculos/qualidade': typeof AdminVeiculosQualidadeRoute
-  '/admin/leads/': typeof AdminLeadsIndexRoute
+  '/admin/vendas/comissoes': typeof AdminVendasComissoesRoute
+  '/admin/vendas/nova': typeof AdminVendasNovaRoute
+  '/admin/financeiro/': typeof AdminFinanceiroIndexRoute
   '/admin/veiculos/': typeof AdminVeiculosIndexRoute
+  '/admin/vendas/': typeof AdminVendasIndexRoute
 }
 export interface FileRoutesByTo {
   '/apresentacao': typeof ApresentacaoRoute
@@ -218,16 +246,20 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/admin': typeof AdminIndexRoute
   '/veiculo/$slug': typeof PublicVeiculoSlugRoute
-  '/admin/leads/atendimentos': typeof AdminLeadsAtendimentosRoute
-  '/admin/leads/historico': typeof AdminLeadsHistoricoRoute
+  '/admin/financeiro/custos': typeof AdminFinanceiroCustosRoute
+  '/admin/financeiro/pagar': typeof AdminFinanceiroPagarRoute
+  '/admin/financeiro/receber': typeof AdminFinanceiroReceberRoute
   '/admin/marketing/conteudo': typeof AdminMarketingConteudoRoute
   '/admin/marketing/publicacoes': typeof AdminMarketingPublicacoesRoute
   '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
   '/admin/veiculos/novo': typeof AdminVeiculosNovoRoute
   '/admin/veiculos/producao': typeof AdminVeiculosProducaoRoute
   '/admin/veiculos/qualidade': typeof AdminVeiculosQualidadeRoute
-  '/admin/leads': typeof AdminLeadsIndexRoute
+  '/admin/vendas/comissoes': typeof AdminVendasComissoesRoute
+  '/admin/vendas/nova': typeof AdminVendasNovaRoute
+  '/admin/financeiro': typeof AdminFinanceiroIndexRoute
   '/admin/veiculos': typeof AdminVeiculosIndexRoute
+  '/admin/vendas': typeof AdminVendasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -248,16 +280,20 @@ export interface FileRoutesById {
   '/_public/': typeof PublicIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/_public/veiculo/$slug': typeof PublicVeiculoSlugRoute
-  '/admin/leads/atendimentos': typeof AdminLeadsAtendimentosRoute
-  '/admin/leads/historico': typeof AdminLeadsHistoricoRoute
+  '/admin/financeiro/custos': typeof AdminFinanceiroCustosRoute
+  '/admin/financeiro/pagar': typeof AdminFinanceiroPagarRoute
+  '/admin/financeiro/receber': typeof AdminFinanceiroReceberRoute
   '/admin/marketing/conteudo': typeof AdminMarketingConteudoRoute
   '/admin/marketing/publicacoes': typeof AdminMarketingPublicacoesRoute
   '/admin/veiculos/$id': typeof AdminVeiculosIdRoute
   '/admin/veiculos/novo': typeof AdminVeiculosNovoRoute
   '/admin/veiculos/producao': typeof AdminVeiculosProducaoRoute
   '/admin/veiculos/qualidade': typeof AdminVeiculosQualidadeRoute
-  '/admin/leads/': typeof AdminLeadsIndexRoute
+  '/admin/vendas/comissoes': typeof AdminVendasComissoesRoute
+  '/admin/vendas/nova': typeof AdminVendasNovaRoute
+  '/admin/financeiro/': typeof AdminFinanceiroIndexRoute
   '/admin/veiculos/': typeof AdminVeiculosIndexRoute
+  '/admin/vendas/': typeof AdminVendasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -278,16 +314,20 @@ export interface FileRouteTypes {
     | '/admin/relatorios'
     | '/admin/'
     | '/veiculo/$slug'
-    | '/admin/leads/atendimentos'
-    | '/admin/leads/historico'
+    | '/admin/financeiro/custos'
+    | '/admin/financeiro/pagar'
+    | '/admin/financeiro/receber'
     | '/admin/marketing/conteudo'
     | '/admin/marketing/publicacoes'
     | '/admin/veiculos/$id'
     | '/admin/veiculos/novo'
     | '/admin/veiculos/producao'
     | '/admin/veiculos/qualidade'
-    | '/admin/leads/'
+    | '/admin/vendas/comissoes'
+    | '/admin/vendas/nova'
+    | '/admin/financeiro/'
     | '/admin/veiculos/'
+    | '/admin/vendas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/apresentacao'
@@ -305,16 +345,20 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/veiculo/$slug'
-    | '/admin/leads/atendimentos'
-    | '/admin/leads/historico'
+    | '/admin/financeiro/custos'
+    | '/admin/financeiro/pagar'
+    | '/admin/financeiro/receber'
     | '/admin/marketing/conteudo'
     | '/admin/marketing/publicacoes'
     | '/admin/veiculos/$id'
     | '/admin/veiculos/novo'
     | '/admin/veiculos/producao'
     | '/admin/veiculos/qualidade'
-    | '/admin/leads'
+    | '/admin/vendas/comissoes'
+    | '/admin/vendas/nova'
+    | '/admin/financeiro'
     | '/admin/veiculos'
+    | '/admin/vendas'
   id:
     | '__root__'
     | '/_public'
@@ -334,16 +378,20 @@ export interface FileRouteTypes {
     | '/_public/'
     | '/admin/'
     | '/_public/veiculo/$slug'
-    | '/admin/leads/atendimentos'
-    | '/admin/leads/historico'
+    | '/admin/financeiro/custos'
+    | '/admin/financeiro/pagar'
+    | '/admin/financeiro/receber'
     | '/admin/marketing/conteudo'
     | '/admin/marketing/publicacoes'
     | '/admin/veiculos/$id'
     | '/admin/veiculos/novo'
     | '/admin/veiculos/producao'
     | '/admin/veiculos/qualidade'
-    | '/admin/leads/'
+    | '/admin/vendas/comissoes'
+    | '/admin/vendas/nova'
+    | '/admin/financeiro/'
     | '/admin/veiculos/'
+    | '/admin/vendas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -469,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicContatoRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/admin/vendas/': {
+      id: '/admin/vendas/'
+      path: '/vendas'
+      fullPath: '/admin/vendas/'
+      preLoaderRoute: typeof AdminVendasIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/veiculos/': {
       id: '/admin/veiculos/'
       path: '/veiculos'
@@ -476,11 +531,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminVeiculosIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/leads/': {
-      id: '/admin/leads/'
-      path: '/leads'
-      fullPath: '/admin/leads/'
-      preLoaderRoute: typeof AdminLeadsIndexRouteImport
+    '/admin/financeiro/': {
+      id: '/admin/financeiro/'
+      path: '/financeiro'
+      fullPath: '/admin/financeiro/'
+      preLoaderRoute: typeof AdminFinanceiroIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/vendas/nova': {
+      id: '/admin/vendas/nova'
+      path: '/vendas/nova'
+      fullPath: '/admin/vendas/nova'
+      preLoaderRoute: typeof AdminVendasNovaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/vendas/comissoes': {
+      id: '/admin/vendas/comissoes'
+      path: '/vendas/comissoes'
+      fullPath: '/admin/vendas/comissoes'
+      preLoaderRoute: typeof AdminVendasComissoesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/veiculos/qualidade': {
@@ -525,18 +594,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMarketingConteudoRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/leads/historico': {
-      id: '/admin/leads/historico'
-      path: '/leads/historico'
-      fullPath: '/admin/leads/historico'
-      preLoaderRoute: typeof AdminLeadsHistoricoRouteImport
+    '/admin/financeiro/receber': {
+      id: '/admin/financeiro/receber'
+      path: '/financeiro/receber'
+      fullPath: '/admin/financeiro/receber'
+      preLoaderRoute: typeof AdminFinanceiroReceberRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/leads/atendimentos': {
-      id: '/admin/leads/atendimentos'
-      path: '/leads/atendimentos'
-      fullPath: '/admin/leads/atendimentos'
-      preLoaderRoute: typeof AdminLeadsAtendimentosRouteImport
+    '/admin/financeiro/pagar': {
+      id: '/admin/financeiro/pagar'
+      path: '/financeiro/pagar'
+      fullPath: '/admin/financeiro/pagar'
+      preLoaderRoute: typeof AdminFinanceiroPagarRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/financeiro/custos': {
+      id: '/admin/financeiro/custos'
+      path: '/financeiro/custos'
+      fullPath: '/admin/financeiro/custos'
+      preLoaderRoute: typeof AdminFinanceiroCustosRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_public/veiculo/$slug': {
@@ -578,32 +654,40 @@ interface AdminRouteChildren {
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminRelatoriosRoute: typeof AdminRelatoriosRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  AdminLeadsAtendimentosRoute: typeof AdminLeadsAtendimentosRoute
-  AdminLeadsHistoricoRoute: typeof AdminLeadsHistoricoRoute
+  AdminFinanceiroCustosRoute: typeof AdminFinanceiroCustosRoute
+  AdminFinanceiroPagarRoute: typeof AdminFinanceiroPagarRoute
+  AdminFinanceiroReceberRoute: typeof AdminFinanceiroReceberRoute
   AdminMarketingConteudoRoute: typeof AdminMarketingConteudoRoute
   AdminMarketingPublicacoesRoute: typeof AdminMarketingPublicacoesRoute
   AdminVeiculosIdRoute: typeof AdminVeiculosIdRoute
   AdminVeiculosNovoRoute: typeof AdminVeiculosNovoRoute
   AdminVeiculosProducaoRoute: typeof AdminVeiculosProducaoRoute
   AdminVeiculosQualidadeRoute: typeof AdminVeiculosQualidadeRoute
-  AdminLeadsIndexRoute: typeof AdminLeadsIndexRoute
+  AdminVendasComissoesRoute: typeof AdminVendasComissoesRoute
+  AdminVendasNovaRoute: typeof AdminVendasNovaRoute
+  AdminFinanceiroIndexRoute: typeof AdminFinanceiroIndexRoute
   AdminVeiculosIndexRoute: typeof AdminVeiculosIndexRoute
+  AdminVendasIndexRoute: typeof AdminVendasIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminRelatoriosRoute: AdminRelatoriosRoute,
   AdminIndexRoute: AdminIndexRoute,
-  AdminLeadsAtendimentosRoute: AdminLeadsAtendimentosRoute,
-  AdminLeadsHistoricoRoute: AdminLeadsHistoricoRoute,
+  AdminFinanceiroCustosRoute: AdminFinanceiroCustosRoute,
+  AdminFinanceiroPagarRoute: AdminFinanceiroPagarRoute,
+  AdminFinanceiroReceberRoute: AdminFinanceiroReceberRoute,
   AdminMarketingConteudoRoute: AdminMarketingConteudoRoute,
   AdminMarketingPublicacoesRoute: AdminMarketingPublicacoesRoute,
   AdminVeiculosIdRoute: AdminVeiculosIdRoute,
   AdminVeiculosNovoRoute: AdminVeiculosNovoRoute,
   AdminVeiculosProducaoRoute: AdminVeiculosProducaoRoute,
   AdminVeiculosQualidadeRoute: AdminVeiculosQualidadeRoute,
-  AdminLeadsIndexRoute: AdminLeadsIndexRoute,
+  AdminVendasComissoesRoute: AdminVendasComissoesRoute,
+  AdminVendasNovaRoute: AdminVendasNovaRoute,
+  AdminFinanceiroIndexRoute: AdminFinanceiroIndexRoute,
   AdminVeiculosIndexRoute: AdminVeiculosIndexRoute,
+  AdminVendasIndexRoute: AdminVendasIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

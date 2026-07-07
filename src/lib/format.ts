@@ -6,6 +6,23 @@ export function formatBRL(value: number): string {
   }).format(value);
 }
 
+/** Moeda com centavos — obrigatório em telas financeiras. */
+export function formatBRLExact(value: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+/** Data ISO (yyyy-mm-dd) → dd/mm/aaaa, sem surpresas de fuso. */
+export function formatDateBR(iso: string): string {
+  const [y, m, d] = iso.slice(0, 10).split("-");
+  if (!y || !m || !d) return iso;
+  return `${d}/${m}/${y}`;
+}
+
 export function formatKm(km: number): string {
   return `${new Intl.NumberFormat("pt-BR").format(km)} km`;
 }

@@ -28,7 +28,10 @@ function buildImages(vehicleId: string, urls: string[]): VehicleImage[] {
 }
 
 function mkVehicle(
-  v: Omit<Vehicle, "images" | "qualityScore" | "createdAt" | "updatedAt"> & {
+  v: Omit<
+    Vehicle,
+    "images" | "qualityScore" | "createdAt" | "updatedAt" | "acquisitionSource" | "preparationStatus"
+  > & {
     extraPhotos?: string[];
   },
 ): Vehicle {
@@ -38,6 +41,8 @@ function mkVehicle(
     ...v,
     images,
     qualityScore: 0, // recomputed by service
+    acquisitionSource: "own_purchase",
+    preparationStatus: "none",
     createdAt: "2026-05-20T12:00:00Z",
     updatedAt: "2026-05-25T09:00:00Z",
   };

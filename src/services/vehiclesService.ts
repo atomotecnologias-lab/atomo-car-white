@@ -48,6 +48,9 @@ function toVehicle(row: VehicleRow, images: VehicleImageRow[], features: Feature
     mainImage,
     images: vehicleImages,
     qualityScore: 0,
+    acquiredAt: row.acquired_at ?? undefined,
+    acquisitionSource: (row.acquisition_source ?? 'own_purchase') as Vehicle['acquisitionSource'],
+    preparationStatus: (row.preparation_status ?? 'none') as Vehicle['preparationStatus'],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }
@@ -177,6 +180,9 @@ export interface CreateVehicleInput {
   status: VehicleStatus
   isFeatured: boolean
   features: string[]
+  /** Jornada: data de entrada na loja (yyyy-mm-dd). */
+  acquiredAt?: string
+  acquisitionSource?: Vehicle['acquisitionSource']
 }
 
 export async function createVehicle(input: CreateVehicleInput): Promise<Vehicle> {
@@ -219,6 +225,8 @@ export async function createVehicle(input: CreateVehicleInput): Promise<Vehicle>
       is_published: isPublished,
       published_at: isPublished ? new Date().toISOString() : null,
       created_by: user?.id ?? null,
+      acquired_at: input.acquiredAt ?? new Date().toISOString().slice(0, 10),
+      acquisition_source: input.acquisitionSource ?? 'own_purchase',
     })
     .select()
     .single()
@@ -246,6 +254,9 @@ export interface UpdateVehicleInput {
   descriptionShort?: string
   descriptionFull?: string
   isFeatured?: boolean
+  acquiredAt?: string
+  acquisitionSource?: Vehicle['acquisitionSource']
+  preparationStatus?: Vehicle['preparationStatus']
 }
 
 export async function updateVehicle(id: string, input: UpdateVehicleInput): Promise<void> {
@@ -259,6 +270,9 @@ export async function updateVehicle(id: string, input: UpdateVehicleInput): Prom
   if (input.descriptionShort !== undefined) patch.description_short = input.descriptionShort
   if (input.descriptionFull !== undefined) patch.description_full = input.descriptionFull
   if (input.isFeatured !== undefined) patch.is_featured = input.isFeatured
+  if (input.acquiredAt !== undefined) patch.acquired_at = input.acquiredAt
+  if (input.acquisitionSource !== undefined) patch.acquisition_source = input.acquisitionSource
+  if (input.preparationStatus !== undefined) patch.preparation_status = input.preparationStatus
   const { error } = await supabase.from('vehicles').update(patch).eq('id', id)
   if (error) throw error
 }

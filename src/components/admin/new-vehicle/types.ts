@@ -1,4 +1,4 @@
-import type { Fuel, PhotoSlotKey, Transmission, VehicleStatus } from "@/types";
+import type { AcquisitionSource, Fuel, PhotoSlotKey, Transmission, VehicleStatus } from "@/types";
 import type { StepDef } from "@/components/admin/stepper/Stepper";
 
 export type FormState = {
@@ -17,6 +17,10 @@ export type FormState = {
   color: string;
   doors: string;
   price: string;
+  // Jornada: entrada do veículo na loja
+  acquisitionPrice: string;
+  acquiredAt: string;
+  acquisitionSource: AcquisitionSource;
   status: VehicleStatus;
   isFeatured: boolean;
   features: string[];
@@ -48,6 +52,9 @@ export const INITIAL: FormState = {
   color: "",
   doors: "4",
   price: "",
+  acquisitionPrice: "",
+  acquiredAt: new Date().toISOString().slice(0, 10),
+  acquisitionSource: "own_purchase",
   status: "draft",
   isFeatured: false,
   features: [],
@@ -63,7 +70,7 @@ export const STEPS: StepDef[] = [
   { key: "mileage", label: "Quilometragem", description: "Leitura do painel" },
   { key: "identity", label: "Identificação", description: "Confirme marca, modelo e ano" },
   { key: "specs", label: "Especificações", description: "Câmbio, combustível, cor" },
-  { key: "price", label: "Preço & destaque", description: "Valor e visibilidade" },
+  { key: "price", label: "Preço & entrada", description: "Venda, aquisição e visibilidade" },
   { key: "features", label: "Opcionais", description: "Itens de série e extras" },
   { key: "photos", label: "Fotos", description: "Diagrama posicional" },
   { key: "content", label: "Conteúdo", description: "Descrições para anúncio" },

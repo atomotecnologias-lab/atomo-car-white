@@ -5,3 +5,6 @@ export * from "./quality";
 export * from "./content";
 export * from "./settings";
 export * from "./events";
+export * from "./team";
+export * from "./sale";
+export * from "./finance";

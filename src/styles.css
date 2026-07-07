@@ -295,3 +295,85 @@
     transform-origin: left;
   }
 }
+
+/*
+ * ============================================================
+ * TEMA CLARO DO PAINEL (.theme-admin)
+ * Aplicado no <html> pelo layout /admin (mount/unmount).
+ * O site público continua dark — :root não muda.
+ *
+ * Camada 1: tokens semânticos shadcn → telas re-tematizam sozinhas.
+ * Camada 2: ponte dos tokens de MARCA (carbon/premium/titanium/clean/
+ * performance) → telas antigas que usam bg-premium/text-clean etc.
+ * degradam legíveis de imediato, permitindo migração incremental.
+ * ============================================================
+ */
+.theme-admin {
+  color-scheme: light;
+
+  /* Camada 1 — tokens semânticos */
+  --background: #F4F6F8;
+  --foreground: #1F2A37;
+  --card: #FFFFFF;
+  --card-foreground: #1F2A37;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F2A37;
+  --primary: #15803D;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EEF1F4;
+  --secondary-foreground: #1F2A37;
+  --muted: #EEF1F4;
+  --muted-foreground: #5D6B7A;
+  --accent: #15803D;
+  --accent-foreground: #FFFFFF;
+  --destructive: #B42318;
+  --destructive-foreground: #FFFFFF;
+  --success: #15803D;
+  --warning: #B54708;
+  --info: #175CD3;
+  --border: #E3E8EE;
+  --input: #D5DBE3;
+  --ring: #15803D;
+
+  /* Camada 2 — ponte dos tokens de marca */
+  --carbon: #F4F6F8;
+  --premium: #FFFFFF;
+  --titanium: #5D6B7A;
+  --clean: #1F2A37;
+  --performance: #15803D;
+  --racing: #116932;
+
+  --chart-1: #15803D;
+  --chart-2: #4CC14F;
+  --chart-3: #175CD3;
+  --chart-4: #F79009;
+  --chart-5: #B42318;
+
+  --gradient-emerald: linear-gradient(135deg, #15803D 0%, #116932 100%);
+  --shadow-elevated:
+    0 1px 2px rgba(16, 24, 40, 0.06),
+    0 12px 24px -8px rgba(16, 24, 40, 0.12);
+  --shadow-card:
+    0 1px 2px rgba(16, 24, 40, 0.05),
+    0 4px 12px -4px rgba(16, 24, 40, 0.08);
+  --shadow-glow: 0 0 0 1px rgba(21, 128, 61, 0.25), 0 12px 32px -12px rgba(21, 128, 61, 0.35);
+}
+
+/*
+ * Painéis que PERMANECEM escuros dentro do admin claro
+ * (sidebar desktop + drawer mobile — padrão QuickBooks).
+ * Re-override dos tokens de marca para os valores dark.
+ */
+.theme-admin .admin-dark {
+  color-scheme: dark;
+  --carbon: #0F1411;
+  --premium: #171B18;
+  --titanium: #8A9290;
+  --clean: #FFFFFF;
+  --performance: #4CC14F;
+  --racing: #2E9F38;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.10);
+  --muted: #1E2421;
+  --muted-foreground: #8A9290;
+}

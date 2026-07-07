@@ -12,6 +12,7 @@ import { computeQualityScore } from "@/lib/quality-score";
 import { toast } from "sonner";
 import { generateAssistedContent } from "@/lib/assisted-content";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { CostsMarginTab } from "@/components/admin/CostsMarginTab";
 import { VehicleStatusBadge } from "@/components/admin/VehicleStatusBadge";
 import { QualityScoreRing } from "@/components/admin/QualityScoreRing";
 import { Button } from "@/components/ui/button";
@@ -301,11 +302,20 @@ function VehicleDetailAdmin() {
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="h-auto w-full justify-start overflow-x-auto rounded-2xl border border-white/[0.06] bg-premium p-1 [&::-webkit-scrollbar]:hidden">
             <Tab value="overview">Visão geral</Tab>
+            <Tab value="costs">Custos & Margem</Tab>
             <Tab value="photos">Fotos</Tab>
             <Tab value="content">Conteúdo</Tab>
             <Tab value="checklist">Checklist</Tab>
             <Tab value="history">Histórico</Tab>
           </TabsList>
+
+          <TabsContent value="costs" className="m-0">
+            <CostsMarginTab
+              vehicleId={vehicle.id}
+              announcedPrice={vehicle.price}
+              isSold={vehicle.status === "sold"}
+            />
+          </TabsContent>
 
           <TabsContent value="overview" className="m-0 space-y-5">
             <Panel title="Descrição">

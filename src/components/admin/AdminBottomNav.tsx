@@ -1,8 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { LayoutDashboard, Warehouse, PlusCircle, Users, Menu } from "lucide-react";
+import { LayoutDashboard, Warehouse, PlusCircle, Wallet, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminMobileDrawer } from "./AdminSidebar";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * Bottom tab bar para navegação rápida no mobile.
@@ -12,6 +13,7 @@ import { AdminMobileDrawer } from "./AdminSidebar";
 export function AdminBottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { role } = useAuth();
 
   const isNovo = pathname === "/admin/veiculos/novo";
 
@@ -20,7 +22,7 @@ export function AdminBottomNav() {
   if (isNovo) return null;
   const dashActive = pathname === "/admin";
   const estoqueActive = pathname.startsWith("/admin/veiculos") && !isNovo;
-  const leadsActive = pathname.startsWith("/admin/leads");
+  const financeActive = pathname.startsWith("/admin/financeiro");
 
   return (
     <>
@@ -38,7 +40,9 @@ export function AdminBottomNav() {
             active={isNovo}
             highlight
           />
-          <TabLink to="/admin/leads" label="Leads" icon={Users} active={leadsActive} />
+          {role === "owner" && (
+            <TabLink to="/admin/financeiro" label="Financeiro" icon={Wallet} active={financeActive} />
+          )}
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
