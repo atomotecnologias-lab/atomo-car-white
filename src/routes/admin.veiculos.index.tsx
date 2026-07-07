@@ -18,7 +18,6 @@ const TABS: { key: "all" | VehicleStatus; label: string }[] = [
   { key: "awaiting_photos", label: "Aguardando fotos" },
   { key: "draft", label: "Rascunhos" },
   { key: "reserved", label: "Reservados" },
-  { key: "sold", label: "Vendidos" },
 ];
 
 const CHANNELS = ["Site", "Instagram", "Marketplace", "Google", "OLX"];
@@ -41,11 +40,16 @@ function VehiclesAdminPage() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  const uniqueBrands = useMemo(() => [...new Set(vehicles.map((v) => v.brand))].sort(), [vehicles]);
+  // Estoque = só o pátio: vendidos ficam em "Vendas"; inativos ficam ocultos.
+  const inStock = useMemo(
+    () => vehicles.filter((v) => v.status !== "sold" && v.status !== "inactive"),
+    [vehicles],
+  );
+  const uniqueBrands = useMemo(() => [...new Set(inStock.map((v) => v.brand))].sort(), [inStock]);
   const activeFilterCount = [brandFilter, minPrice, maxPrice].filter(Boolean).length;
 
   const filtered = useMemo(() => {
-    return vehicles.filter((v) => {
+    return inStock.filter((v) => {
       if (tab !== "all" && v.status !== tab) return false;
       if (query) {
         const q = query.toLowerCase();
@@ -61,13 +65,13 @@ function VehiclesAdminPage() {
       if (maxPrice && v.price > Number(maxPrice)) return false;
       return true;
     });
-  }, [vehicles, tab, query, brandFilter, minPrice, maxPrice]);
+  }, [inStock, tab, query, brandFilter, minPrice, maxPrice]);
 
   return (
     <>
       <AdminTopbar
         title="Estoque"
-        subtitle={`${vehicles.length} no estoque · ${vehicles.filter((v) => v.isPublished).length} publicados`}
+        subtitle={`${inStock.length} no estoque · ${inStock.filter((v) => v.isPublished).length} publicados`}
         actions={
           <Link
             to="/admin/veiculos/novo"
@@ -84,7 +88,7 @@ function VehiclesAdminPage() {
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-premium p-3">
           <div className="flex w-full items-center gap-1 overflow-x-auto sm:w-auto [&::-webkit-scrollbar]:hidden">
             {TABS.map((t) => {
-              const count = t.key === "all" ? vehicles.length : vehicles.filter((v) => v.status === t.key).length;
+              const count = t.key === "all" ? inStock.length : inStock.filter((v) => v.status === t.key).length;
               const active = tab === t.key;
               return (
                 <button

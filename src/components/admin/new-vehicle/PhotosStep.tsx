@@ -86,7 +86,7 @@ export function PhotosStep({ form, set }: StepProps) {
         <div className="mt-6 flex items-center justify-between rounded-xl border border-border bg-carbon px-4 py-3">
           <div>
             <div className="text-[10px] uppercase tracking-[0.18em] text-titanium">
-              Cobertura obrigatória
+              Cobertura recomendada
             </div>
             <div className="mt-1 font-display text-lg text-clean tabular">
               {filledRequired}
@@ -144,11 +144,7 @@ export function PhotosStep({ form, set }: StepProps) {
                   onClick={() => setActiveSlot(slot.key)}
                   className={cn(
                     "group relative aspect-square overflow-hidden rounded-lg border bg-carbon text-left transition-all",
-                    url
-                      ? "border-performance/30"
-                      : slot.group === "required"
-                      ? "border-white/10 border-dashed"
-                      : "border-border border-dashed",
+                    url ? "border-performance/30" : "border-border border-dashed",
                     activeSlot === slot.key && "ring-2 ring-performance/60",
                   )}
                 >
@@ -172,9 +168,6 @@ export function PhotosStep({ form, set }: StepProps) {
                         {slot.label}
                       </span>
                     </div>
-                  )}
-                  {slot.group === "required" && !url && (
-                    <span className="absolute left-1 top-1 h-1.5 w-1.5 rounded-full bg-warning" />
                   )}
                 </button>
               );

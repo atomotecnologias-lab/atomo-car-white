@@ -140,13 +140,13 @@ function NewVehiclePage() {
     <>
       {saving && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-carbon/80 backdrop-blur-sm">
-          <div className="w-[88%] max-w-sm rounded-2xl border border-white/[0.08] bg-premium p-6 text-center shadow-2xl">
+          <div className="w-[88%] max-w-sm rounded-2xl border border-input bg-premium p-6 text-center shadow-2xl">
             <div className="text-sm font-medium text-clean">
               {saveLabel || "Salvando…"}
             </div>
             {uploadPct !== null ? (
               <>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full bg-performance transition-all duration-300"
                     style={{ width: `${uploadPct}%` }}
@@ -157,7 +157,7 @@ function NewVehiclePage() {
                 </div>
               </>
             ) : (
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
                 <div className="h-full w-1/3 animate-pulse rounded-full bg-performance" />
               </div>
             )}
@@ -171,7 +171,7 @@ function NewVehiclePage() {
         actions={
           <Link
             to="/admin/veiculos"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-premium px-3 py-2 text-xs text-clean/80 hover:text-clean"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-input bg-premium px-3 py-2 text-xs text-clean/80 hover:text-clean"
           >
             <ChevronLeft className="h-3.5 w-3.5" /> Voltar
           </Link>
@@ -180,7 +180,7 @@ function NewVehiclePage() {
 
       <div className="grid grid-cols-1 gap-6 p-4 sm:p-6 lg:grid-cols-[280px_1fr] lg:p-8">
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="rounded-2xl border border-white/[0.06] bg-premium p-3">
+          <div className="rounded-2xl border border-border bg-premium p-3">
             <Stepper
               steps={STEPS}
               currentIndex={stepIdx}
@@ -198,7 +198,7 @@ function NewVehiclePage() {
         <section className="space-y-5">
           {/* Mobile step progress bar — hidden on desktop (sidebar handles it) */}
           <div className="flex items-center gap-3 lg:hidden">
-            <div className="flex-1 h-1 overflow-hidden rounded-full bg-white/10">
+            <div className="flex-1 h-1 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full bg-performance transition-all duration-500"
                 style={{ width: `${((stepIdx + 1) / STEPS.length) * 100}%` }}
@@ -209,8 +209,8 @@ function NewVehiclePage() {
             </span>
           </div>
 
-          <div className="rounded-2xl border border-white/[0.06] bg-premium">
-            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-white/[0.06] px-4 py-4 sm:px-6 sm:py-5">
+          <div className="rounded-2xl border border-border bg-premium">
+            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-4 py-4 sm:px-6 sm:py-5">
               <div className="min-w-0 flex-1">
                 <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-performance">
                   Etapa {stepIdx + 1} de {STEPS.length}
@@ -227,7 +227,7 @@ function NewVehiclePage() {
                   <Check className="h-3 w-3" /> Pronto
                 </div>
               ) : (
-                <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-amber-300">
+                <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-warning">
                   {currentErrors.length} pend.
                 </div>
               )}
@@ -245,9 +245,9 @@ function NewVehiclePage() {
               {currentStep.key === "review" && <ReviewStep form={form} />}
             </div>
 
-            <footer className="sticky bottom-0 z-10 border-t border-white/[0.06] bg-premium/95 px-3 sm:px-6 pt-3 sm:pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur supports-[backdrop-filter]:bg-premium/80">
+            <footer className="sticky bottom-0 z-10 border-t border-border bg-premium/95 px-3 sm:px-6 pt-3 sm:pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur supports-[backdrop-filter]:bg-premium/80">
               {currentErrors.length > 0 && (
-                <div className="mb-2 text-xs text-amber-300/90 md:hidden">
+                <div className="mb-2 text-xs text-warning/90 md:hidden">
                   {currentErrors[0]}
                 </div>
               )}
@@ -256,14 +256,14 @@ function NewVehiclePage() {
                   type="button"
                   onClick={goPrev}
                   disabled={stepIdx === 0}
-                  className="inline-flex h-11 sm:h-auto items-center gap-2 rounded-lg border border-white/[0.08] px-4 py-2 text-sm text-clean/80 transition-colors hover:text-clean disabled:opacity-30"
+                  className="inline-flex h-11 sm:h-auto items-center gap-2 rounded-lg border border-input px-4 py-2 text-sm text-clean/80 transition-colors hover:text-clean disabled:opacity-30"
                 >
                   <ArrowLeft className="h-4 w-4" /> Voltar
                 </button>
 
                 <div className="hidden text-xs text-titanium md:block">
                   {currentErrors.length > 0 ? (
-                    <span className="text-amber-300/90">{currentErrors[0]}</span>
+                    <span className="text-warning/90">{currentErrors[0]}</span>
                   ) : (
                     <span>Tudo certo para avançar</span>
                   )}
@@ -272,7 +272,7 @@ function NewVehiclePage() {
                 <Button
                   onClick={goNext}
                   disabled={!canAdvance || saving}
-                  className="h-11 sm:h-auto bg-performance text-carbon hover:bg-racing disabled:bg-white/10 disabled:text-titanium"
+                  className="h-11 sm:h-auto bg-performance text-carbon hover:bg-racing disabled:bg-muted disabled:text-titanium"
                 >
                   {saving ? (saveLabel || "Salvando…") : isLast ? "Concluir cadastro" : "Avançar"}
                   {!isLast && !saving && <ArrowRight className="h-4 w-4" />}

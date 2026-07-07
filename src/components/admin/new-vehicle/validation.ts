@@ -33,11 +33,10 @@ export function validateAll(f: FormState) {
   if (!f.acquisitionPrice || Number(String(f.acquisitionPrice).replace(/[^\d]/g, "")) <= 0)
     errs.price.push("Informe o valor de aquisição — base do lucro real");
 
+  // Fotos não são obrigatórias por enquanto — contam só para a qualidade do anúncio.
   const requiredFilled = PHOTO_SLOTS.filter(
     (s) => s.group === "required" && f.photos[s.key],
   ).length;
-  if (requiredFilled < 4)
-    errs.photos.push(`Adicione pelo menos 4 fotos obrigatórias (${requiredFilled}/8)`);
 
   if (f.descriptionShort.trim().length < 20)
     errs.content.push("Descrição curta precisa de ao menos 20 caracteres");

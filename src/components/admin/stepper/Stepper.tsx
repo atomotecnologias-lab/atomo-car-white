@@ -33,7 +33,7 @@ export function Stepper({
               className={cn(
                 "group flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors",
                 isCurrent && "bg-performance/10",
-                !isCurrent && isReachable && "hover:bg-white/[0.03]",
+                !isCurrent && isReachable && "hover:bg-muted",
                 !isReachable && "cursor-not-allowed opacity-50",
               )}
             >
@@ -42,7 +42,7 @@ export function Stepper({
                   "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border text-[10px] font-medium tabular transition-colors",
                   isCurrent && "border-performance bg-performance text-carbon",
                   isDone && !isCurrent && "border-performance/40 bg-performance/15 text-performance",
-                  !isCurrent && !isDone && "border-white/15 text-titanium",
+                  !isCurrent && !isDone && "border-border text-titanium",
                 )}
               >
                 {isDone ? <Check className="h-3 w-3" /> : i + 1}
