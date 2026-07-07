@@ -53,9 +53,9 @@ export function PhotosStep({ form, set }: StepProps) {
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-b from-carbon to-[#0a0d0b] p-6">
+      <div className="rounded-2xl border border-border bg-muted p-6">
         <div className="mb-4 flex items-center justify-between">
-          <div className="inline-flex rounded-lg border border-white/[0.06] bg-premium p-0.5">
+          <div className="inline-flex rounded-lg border border-border bg-premium p-0.5">
             {(["exterior", "interior"] as const).map((v) => (
               <button
                 key={v}
@@ -83,7 +83,7 @@ export function PhotosStep({ form, set }: StepProps) {
           onSelect={(k) => setActiveSlot((s) => (s === k ? null : k))}
         />
 
-        <div className="mt-6 flex items-center justify-between rounded-xl border border-white/[0.06] bg-carbon px-4 py-3">
+        <div className="mt-6 flex items-center justify-between rounded-xl border border-border bg-carbon px-4 py-3">
           <div>
             <div className="text-[10px] uppercase tracking-[0.18em] text-titanium">
               Cobertura obrigatória
@@ -93,7 +93,7 @@ export function PhotosStep({ form, set }: StepProps) {
               <span className="text-titanium">/{requiredSlots.length}</span>
             </div>
           </div>
-          <div className="h-2 w-32 overflow-hidden rounded-full bg-white/[0.06]">
+          <div className="h-2 w-32 overflow-hidden rounded-full bg-muted">
             <div
               className="h-full rounded-full bg-gradient-to-r from-performance to-racing transition-all"
               style={{ width: `${(filledRequired / requiredSlots.length) * 100}%` }}
@@ -115,7 +115,7 @@ export function PhotosStep({ form, set }: StepProps) {
             onClose={() => setActiveSlot(null)}
           />
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/[0.08] bg-premium/50 p-6 text-center">
+          <div className="rounded-2xl border border-dashed border-input bg-premium/50 p-6 text-center">
             <Camera className="mx-auto h-6 w-6 text-titanium" />
             <p className="mt-3 text-sm text-clean">Selecione uma posição no diagrama</p>
             <p className="mt-1 text-xs text-titanium">
@@ -124,7 +124,7 @@ export function PhotosStep({ form, set }: StepProps) {
           </div>
         )}
 
-        <div className="rounded-2xl border border-white/[0.06] bg-premium p-4">
+        <div className="rounded-2xl border border-border bg-premium p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-[0.18em] text-titanium">
               Todas as posições
@@ -148,14 +148,14 @@ export function PhotosStep({ form, set }: StepProps) {
                       ? "border-performance/30"
                       : slot.group === "required"
                       ? "border-white/10 border-dashed"
-                      : "border-white/[0.06] border-dashed",
+                      : "border-border border-dashed",
                     activeSlot === slot.key && "ring-2 ring-performance/60",
                   )}
                 >
                   {url ? (
                     <>
                       <img src={url} alt="" className="h-full w-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-carbon/95 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                       {isMain && (
                         <span className="absolute right-1 top-1 inline-flex items-center gap-0.5 rounded-full bg-performance/95 px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-wider text-carbon">
                           <Star className="h-2.5 w-2.5 fill-carbon" /> Capa
@@ -174,7 +174,7 @@ export function PhotosStep({ form, set }: StepProps) {
                     </div>
                   )}
                   {slot.group === "required" && !url && (
-                    <span className="absolute left-1 top-1 h-1.5 w-1.5 rounded-full bg-amber-400" />
+                    <span className="absolute left-1 top-1 h-1.5 w-1.5 rounded-full bg-warning" />
                   )}
                 </button>
               );
@@ -219,17 +219,17 @@ function ActiveSlotPanel({
           type="button"
           onClick={onClose}
           aria-label="Fechar painel da posição"
-          className="grid h-7 w-7 place-items-center rounded-md text-titanium hover:bg-white/[0.04] hover:text-clean"
+          className="grid h-7 w-7 place-items-center rounded-md text-titanium hover:bg-muted hover:text-clean"
         >
           <X aria-hidden className="h-4 w-4" />
         </button>
       </div>
 
-      <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-white/[0.06] bg-carbon">
+      <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-border bg-carbon">
         {currentUrl ? (
           <img src={currentUrl} alt={def.label} className="h-full w-full object-cover" />
         ) : (
-          <label className="flex h-full cursor-pointer flex-col items-center justify-center gap-2 text-titanium transition-colors hover:bg-white/[0.02] hover:text-clean">
+          <label className="flex h-full cursor-pointer flex-col items-center justify-center gap-2 text-titanium transition-colors hover:bg-muted hover:text-clean">
             <Upload className="h-6 w-6" />
             <span className="text-sm">Clique para enviar a foto</span>
             <span className="text-[10px] uppercase tracking-[0.18em]">JPG · PNG até 8 MB</span>
@@ -251,12 +251,12 @@ function ActiveSlotPanel({
               <Button
                 type="button"
                 onClick={onSetMain}
-                className="h-11 w-full justify-center sm:h-auto sm:w-auto bg-white/[0.06] text-clean hover:bg-white/[0.1]"
+                className="h-11 w-full justify-center sm:h-auto sm:w-auto bg-muted text-clean hover:bg-muted"
               >
                 <Star className="h-3.5 w-3.5" /> Definir como capa
               </Button>
             )}
-            <label className="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-clean/80 hover:text-clean sm:h-auto sm:w-auto sm:justify-start">
+            <label className="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-input px-3 py-2 text-xs text-clean/80 hover:text-clean sm:h-auto sm:w-auto sm:justify-start">
               <Upload className="h-3.5 w-3.5" />
               Substituir
               <input

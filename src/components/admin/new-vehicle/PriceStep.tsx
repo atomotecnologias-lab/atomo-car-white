@@ -58,7 +58,7 @@ export function PriceStep({ form, set }: StepProps) {
           </p>
         )}
 
-        <div className="mt-3 rounded-xl border border-white/[0.06] bg-carbon/40 p-3">
+        <div className="mt-3 rounded-xl border border-border bg-carbon/40 p-3">
           <Button
             type="button"
             variant="outline"
@@ -108,7 +108,7 @@ export function PriceStep({ form, set }: StepProps) {
         </div>
       </Field>
       {/* Entrada na loja — alimenta custos e lucro real */}
-      <div className="md:col-span-2 rounded-xl border border-white/[0.06] bg-carbon/40 p-4">
+      <div className="md:col-span-2 rounded-xl border border-border bg-carbon/40 p-4">
         <div className="mb-3 flex items-center gap-2">
           <Wallet className="h-4 w-4 text-performance" />
           <span className="font-display text-sm font-semibold text-clean">Entrada na loja</span>
@@ -186,7 +186,7 @@ export function PriceStep({ form, set }: StepProps) {
             "flex w-full items-center justify-between rounded-lg border px-4 py-3 text-sm transition-colors",
             form.isFeatured
               ? "border-performance/40 bg-performance/10 text-performance"
-              : "border-white/[0.08] bg-carbon text-clean/80 hover:text-clean",
+              : "border-input bg-carbon text-clean/80 hover:text-clean",
           )}
         >
           <span className="inline-flex items-center gap-2">

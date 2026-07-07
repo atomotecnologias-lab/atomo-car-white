@@ -330,7 +330,7 @@ function OwnerDashboard() {
     <>
       <AdminTopbar
         title="Central de Operações"
-        subtitle="A saúde do seu dinheiro, em uma tela."
+        subtitle="Tudo que importa da sua loja, num só lugar."
         actions={
           <>
             <Button asChild size="sm" variant="outline">

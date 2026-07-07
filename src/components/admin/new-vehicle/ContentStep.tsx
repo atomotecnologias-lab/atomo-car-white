@@ -68,7 +68,7 @@ export function ContentStep({ form, set }: StepProps) {
           type="button"
           onClick={generate}
           disabled={!canSuggest || loading}
-          className="h-11 w-full sm:h-auto sm:w-auto bg-performance text-carbon hover:bg-racing disabled:bg-white/10 disabled:text-titanium"
+          className="h-11 w-full sm:h-auto sm:w-auto bg-performance text-carbon hover:bg-racing disabled:opacity-50"
         >
           {loading ? (
             <>

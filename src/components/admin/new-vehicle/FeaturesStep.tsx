@@ -38,7 +38,7 @@ export function FeaturesStep({ form, set }: StepProps) {
                   "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 sm:py-1.5 text-xs transition-all min-h-[40px] sm:min-h-0",
                   active
                     ? "border-performance bg-performance/15 text-performance"
-                    : "border-white/[0.08] bg-carbon text-clean/80 hover:border-performance/40 hover:text-clean",
+                    : "border-input bg-carbon text-clean/80 hover:border-performance/40 hover:text-clean",
                 )}
               >
                 {active && <Check className="h-3 w-3" />}
@@ -74,7 +74,7 @@ export function FeaturesStep({ form, set }: StepProps) {
                 setCustom("");
               }
             }}
-            className="h-11 sm:h-auto bg-white/[0.06] text-clean hover:bg-white/[0.1]"
+            className="h-11 sm:h-auto bg-muted text-clean hover:bg-muted"
           >
             Adicionar
           </Button>
@@ -82,7 +82,7 @@ export function FeaturesStep({ form, set }: StepProps) {
       </Field>
 
       {form.features.length > 0 && (
-        <div className="rounded-xl border border-white/[0.06] bg-carbon p-4">
+        <div className="rounded-xl border border-border bg-carbon p-4">
           <div className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-titanium">
             Selecionados
           </div>

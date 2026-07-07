@@ -121,14 +121,13 @@ export function PlateStep({ form, set }: StepProps) {
               )}
               placeholder="ABC-1D23"
               maxLength={8}
-              autoFocus
             />
             <ScanLine className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-performance" />
             {form.plate && (
               <span
                 className={cn(
                   "absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-medium uppercase tracking-[0.18em]",
-                  valid ? "text-performance" : "text-amber-300",
+                  valid ? "text-performance" : "text-warning",
                 )}
               >
                 {valid ? "válida" : "incompleta"}
@@ -141,7 +140,7 @@ export function PlateStep({ form, set }: StepProps) {
           type="button"
           onClick={() => runLookup()}
           disabled={!valid || loading || enriching || reading}
-          className="w-full bg-performance text-carbon hover:bg-racing disabled:bg-white/10 disabled:text-titanium"
+          className="w-full bg-performance text-carbon hover:bg-racing disabled:opacity-50"
         >
           {loading ? (
             <>
@@ -190,7 +189,7 @@ export function PlateStep({ form, set }: StepProps) {
           </span>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-white/[0.1] bg-gradient-to-b from-carbon to-[#0a0d0b]">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-border bg-muted">
           {reading && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-carbon/70 backdrop-blur-sm">
               <Loader2 className="h-6 w-6 animate-spin text-performance" />

@@ -50,7 +50,6 @@ export function MileageStep({ form, set }: StepProps) {
               onChange={(e) => set("mileage", e.target.value)}
               className={cn(inputCls, "pl-11 font-display text-2xl tabular")}
               placeholder="42500"
-              autoFocus
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs uppercase tracking-[0.18em] text-titanium">
               km
@@ -72,7 +71,7 @@ export function MileageStep({ form, set }: StepProps) {
               key={v}
               type="button"
               onClick={() => set("mileage", String(v))}
-              className="rounded-lg border border-white/[0.06] bg-carbon py-2 text-xs text-clean/80 hover:border-performance/30 hover:text-clean"
+              className="rounded-lg border border-border bg-carbon py-2 text-xs text-clean/80 hover:border-performance/30 hover:text-clean"
             >
               {new Intl.NumberFormat("pt-BR").format(v)}
             </button>
@@ -90,7 +89,7 @@ export function MileageStep({ form, set }: StepProps) {
           </span>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-white/[0.1] bg-gradient-to-b from-carbon to-[#0a0d0b]">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-dashed border-border bg-muted">
           {reading && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-carbon/70 backdrop-blur-sm">
               <Loader2 className="h-6 w-6 animate-spin text-performance" />

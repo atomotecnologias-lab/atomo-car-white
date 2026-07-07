@@ -65,9 +65,14 @@ function AdminLayout() {
   }
 
   return (
-    <div className="flex min-h-screen w-full overflow-x-hidden bg-carbon text-clean">
+    <div className="flex min-h-screen w-full bg-carbon text-clean">
       <AdminSidebar />
-      <main className={cn("flex min-h-screen min-w-0 flex-1 flex-col", !isNovo && "pb-20 lg:pb-0")}>
+      <main
+        className={cn(
+          "flex min-h-screen min-w-0 flex-1 flex-col overflow-x-hidden",
+          !isNovo && "pb-20 lg:pb-0",
+        )}
+      >
         <Outlet />
       </main>
       <AdminBottomNav />

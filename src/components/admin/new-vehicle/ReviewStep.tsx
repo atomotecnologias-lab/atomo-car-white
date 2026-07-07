@@ -10,7 +10,7 @@ export function ReviewStep({ form }: { form: FormState }) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-[260px_1fr]">
-        <div className="aspect-video overflow-hidden rounded-xl border border-white/[0.06] bg-carbon">
+        <div className="aspect-video overflow-hidden rounded-xl border border-border bg-carbon">
           {mainUrl ? (
             <img src={mainUrl} alt="" className="h-full w-full object-cover" />
           ) : (
@@ -54,7 +54,7 @@ export function ReviewStep({ form }: { form: FormState }) {
       </div>
 
       {form.descriptionShort && (
-        <div className="rounded-xl border border-white/[0.06] bg-carbon p-4">
+        <div className="rounded-xl border border-border bg-carbon p-4">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.18em] text-titanium">
             <Eye className="h-3 w-3" /> Pré-visualização do card
           </div>
@@ -63,7 +63,7 @@ export function ReviewStep({ form }: { form: FormState }) {
       )}
 
       {form.descriptionFull && (
-        <div className="rounded-xl border border-white/[0.06] bg-carbon p-4">
+        <div className="rounded-xl border border-border bg-carbon p-4">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.18em] text-titanium">
             <Eye className="h-3 w-3" /> Descrição do anúncio
           </div>

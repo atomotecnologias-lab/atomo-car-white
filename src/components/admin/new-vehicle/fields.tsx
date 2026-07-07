@@ -2,7 +2,7 @@ import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const inputCls =
-  "w-full h-11 sm:h-auto rounded-lg border border-white/[0.08] bg-carbon px-4 py-2.5 text-sm text-clean placeholder:text-titanium/70 transition-colors focus:border-performance/40 focus:outline-none focus:ring-2 focus:ring-performance/20";
+  "w-full h-11 sm:h-auto rounded-lg border border-input bg-carbon px-4 py-2.5 text-sm text-clean placeholder:text-titanium/70 transition-colors focus:border-performance/40 focus:outline-none focus:ring-2 focus:ring-performance/20";
 
 export function Field({
   label,
@@ -53,7 +53,7 @@ export function ChoiceGroup<T extends string>({
               "h-11 sm:h-auto rounded-lg border px-3 sm:px-3.5 py-2.5 sm:py-2 text-xs font-medium transition-all",
               active
                 ? "border-performance bg-performance/15 text-performance"
-                : "border-white/[0.08] bg-carbon text-clean/80 hover:border-performance/30 hover:text-clean",
+                : "border-input bg-carbon text-clean/80 hover:border-performance/30 hover:text-clean",
             )}
           >
             {o.label}
@@ -66,7 +66,7 @@ export function ChoiceGroup<T extends string>({
 
 export function SummaryStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-carbon p-3">
+    <div className="rounded-xl border border-border bg-carbon p-3">
       <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-titanium">
         {label}
       </div>
@@ -85,7 +85,7 @@ export function ProgressCard({
   score: number;
 }) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-performance/5 to-transparent p-5">
+    <div className="rounded-2xl border border-border bg-gradient-to-br from-performance/5 to-transparent p-5">
       <div className="flex items-center justify-between">
         <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-performance">
           Progresso
@@ -94,7 +94,7 @@ export function ProgressCard({
           {current}/{total}
         </span>
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
         <div
           className="h-full rounded-full bg-gradient-to-r from-performance to-racing transition-all duration-500"
           style={{ width: `${(current / total) * 100}%` }}
