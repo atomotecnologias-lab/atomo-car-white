@@ -7,14 +7,14 @@ import { Instagram, Facebook, MapPin, Clock, ExternalLink } from "lucide-react";
 export const Route = createFileRoute("/_public/contato")({
   head: () => ({
     meta: [
-      { title: "Contato — Atomo Car" },
-      { name: "description", content: "Endereço, WhatsApp e horários da Atomo Car." },
-      { property: "og:title", content: "Contato — Atomo Car" },
-      { property: "og:description", content: "Fale com a Atomo Car." },
-      { property: "og:url", content: "https://atomocar.com.br/contato" },
+      { title: "Contato — ToniKar" },
+      { name: "description", content: "Endereço, WhatsApp e horários da ToniKar." },
+      { property: "og:title", content: "Contato — ToniKar" },
+      { property: "og:description", content: "Fale com a ToniKar." },
+      { property: "og:url", content: "https://tonikar.com.br/contato" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/contato" },
+      { rel: "canonical", href: "https://tonikar.com.br/contato" },
     ],
   }),
   component: ContactPage,
@@ -53,12 +53,12 @@ function ContactPage() {
           <InfoBlock
             icon={<Instagram className="h-4 w-4" />}
             title="Instagram"
-            body={<a href={mockSettings.instagram} className="inline-flex items-center gap-1 text-clean hover:text-accent">@atomocar <ExternalLink className="h-3 w-3" /></a>}
+            body={<a href={mockSettings.instagram} className="inline-flex items-center gap-1 text-clean hover:text-accent">@tonikar <ExternalLink className="h-3 w-3" /></a>}
           />
           <InfoBlock
             icon={<Facebook className="h-4 w-4" />}
             title="Facebook"
-            body={<a href={mockSettings.facebook} className="inline-flex items-center gap-1 text-clean hover:text-accent">Atomo Car <ExternalLink className="h-3 w-3" /></a>}
+            body={<a href={mockSettings.facebook} className="inline-flex items-center gap-1 text-clean hover:text-accent">ToniKar <ExternalLink className="h-3 w-3" /></a>}
           />
 
           <div className="rounded-xl border border-border bg-carbon p-6 text-clean">
@@ -76,7 +76,7 @@ function ContactPage() {
           <div className="overflow-hidden rounded-xl border border-border bg-muted">
             <div className="aspect-square sm:aspect-[4/5]">
               <iframe
-                title="Mapa Atomo Car — localização"
+                title="Mapa ToniKar — localização"
                 src={mockSettings.googleMapsEmbedUrl}
                 className="h-full w-full border-0"
                 loading="lazy"

@@ -49,7 +49,7 @@ function mkVehicle(
 }
 
 /**
- * Estoque de demonstração — Atomo Car.
+ * Estoque de demonstração — ToniKar.
  */
 export const mockVehicles: Vehicle[] = [
   mkVehicle({

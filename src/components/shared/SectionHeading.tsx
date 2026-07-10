@@ -23,8 +23,8 @@ export function SectionHeading({
       )}
     >
       {eyebrow && (
-        <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-accent">
-          <span className="h-px w-6 bg-accent" />
+        <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-gold">
+          <span className="h-px w-6 bg-gold" />
           {eyebrow}
         </div>
       )}

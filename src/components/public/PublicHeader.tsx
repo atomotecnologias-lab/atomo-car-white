@@ -110,7 +110,7 @@ export function PublicHeader() {
         <div className="flex items-center justify-end">
           <WhatsappButton
             size="sm"
-            className="group/cta relative bg-performance text-carbon shadow-[0_0_0_0_color-mix(in_oklab,var(--color-performance)_60%,transparent)] transition-all duration-500 hover:bg-racing hover:shadow-[0_0_28px_-4px_color-mix(in_oklab,var(--color-performance)_60%,transparent)]"
+            className="group/cta relative bg-performance text-clean shadow-[0_0_0_0_color-mix(in_oklab,var(--color-performance)_60%,transparent)] transition-all duration-500 hover:bg-racing hover:shadow-[0_0_28px_-4px_color-mix(in_oklab,var(--color-performance)_60%,transparent)]"
           >
             <span className="hidden sm:inline">{mockSettings.whatsappDisplay}</span>
             <span className="sm:hidden">WhatsApp</span>
@@ -138,7 +138,7 @@ export function PublicHeader() {
               );
             })}
             <div className="mt-3">
-              <WhatsappButton className="w-full bg-performance text-carbon hover:bg-racing">
+              <WhatsappButton className="w-full bg-performance text-clean hover:bg-racing">
                 {mockSettings.whatsappDisplay}
               </WhatsappButton>
             </div>

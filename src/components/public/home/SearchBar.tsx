@@ -92,7 +92,7 @@ export function SearchBar({ brands = [] }: { brands?: string[] }) {
         <Button
           type="submit"
           size="lg"
-          className="group h-12 gap-2 bg-performance px-6 text-carbon hover:bg-performance"
+          className="group h-12 gap-2 bg-performance px-6 text-clean hover:bg-performance"
         >
           <Search className="h-4 w-4" />
           <span>Buscar</span>

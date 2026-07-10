@@ -10,14 +10,14 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_public/financiamento")({
   head: () => ({
     meta: [
-      { title: "Financiamento — Atomo Car" },
+      { title: "Financiamento — ToniKar" },
       { name: "description", content: "Auxiliamos no financiamento do seu próximo veículo com as melhores condições." },
-      { property: "og:title", content: "Financiamento — Atomo Car" },
+      { property: "og:title", content: "Financiamento — ToniKar" },
       { property: "og:description", content: "Trabalhamos com diversos bancos para encontrar a melhor condição." },
-      { property: "og:url", content: "https://atomocar.com.br/financiamento" },
+      { property: "og:url", content: "https://tonikar.com.br/financiamento" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/financiamento" },
+      { rel: "canonical", href: "https://tonikar.com.br/financiamento" },
     ],
   }),
   component: FinancingPage,

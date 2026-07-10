@@ -25,7 +25,6 @@ import {
   CircleDollarSign,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -130,12 +129,12 @@ function SidebarBody({
   return (
     <>
       <div className="flex h-16 items-center gap-3 border-b border-white/[0.06] px-5 lg:h-20">
-        <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg bg-premium ring-1 ring-white/5">
-          <img src={atomoCarLogo.url} alt="Atomo Car" className="h-9 w-9 object-contain" />
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-premium ring-1 ring-white/5">
+          <span className="font-display text-base font-bold tracking-tight text-performance">TK</span>
         </span>
         {!collapsed && (
           <div className="leading-tight">
-            <div className="font-display text-sm font-semibold tracking-tight text-clean">Atomo Car</div>
+            <div className="font-display text-sm font-semibold tracking-tight text-clean">ToniKar</div>
             <div className="text-[9px] uppercase tracking-[0.28em] text-titanium">Cockpit</div>
           </div>
         )}

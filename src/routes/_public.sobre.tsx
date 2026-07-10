@@ -7,21 +7,21 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_public/sobre")({
   head: () => ({
     meta: [
-      { title: "Sobre a Atomo Car — Confiança e procedência em Jaraguá do Sul" },
+      { title: "Sobre a ToniKar — Confiança e procedência em Jaraguá do Sul" },
       {
         name: "description",
         content:
-          "Desde 2018 a Atomo Car constrói confiança em cada negociação, com veículos de procedência e atendimento próximo em Jaraguá do Sul, SC.",
+          "Desde 2018 a ToniKar constrói confiança em cada negociação, com veículos de procedência e atendimento próximo em Jaraguá do Sul, SC.",
       },
-      { property: "og:title", content: "Sobre a Atomo Car" },
+      { property: "og:title", content: "Sobre a ToniKar" },
       {
         property: "og:description",
         content: "Confiança em cada negociação. Veículos selecionados, atendimento próximo e transparência.",
       },
-      { property: "og:url", content: "https://atomocar.com.br/sobre" },
+      { property: "og:url", content: "https://tonikar.com.br/sobre" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/sobre" },
+      { rel: "canonical", href: "https://tonikar.com.br/sobre" },
     ],
   }),
   component: AboutPage,
@@ -51,7 +51,7 @@ function AboutPage() {
             {/* LEFT */}
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-clean/90 backdrop-blur">
-                Sobre a Atomo Car
+                Sobre a ToniKar
               </div>
 
               <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-clean sm:text-5xl lg:text-[3.25rem]">
@@ -61,7 +61,7 @@ function AboutPage() {
 
               <div className="mt-7 space-y-5 font-display text-base font-light leading-relaxed text-clean/80 sm:text-lg">
                 <p>
-                  A Atomo Car nasceu em Jaraguá do Sul com um propósito simples:
+                  A ToniKar nasceu em Jaraguá do Sul com um propósito simples:
                   oferecer veículos de qualidade através de negociações transparentes e
                   atendimento próximo.
                 </p>
@@ -90,7 +90,7 @@ function AboutPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="group h-12 gap-2 bg-performance px-6 text-carbon hover:bg-performance"
+                  className="group h-12 gap-2 bg-performance px-6 text-clean hover:bg-performance"
                 >
                   <Link to="/estoque">
                     Ver estoque disponível
@@ -109,7 +109,7 @@ function AboutPage() {
                     <iframe
                       src={reelUrl}
                       className="absolute inset-0 h-full w-full"
-                      title="Vídeo institucional Atomo Car"
+                      title="Vídeo institucional ToniKar"
                       allow="autoplay; encrypted-media; picture-in-picture"
                       allowFullScreen
                     />
@@ -117,7 +117,7 @@ function AboutPage() {
                     <button
                       type="button"
                       onClick={() => setPlaying(true)}
-                      aria-label="Reproduzir vídeo institucional da Atomo Car"
+                      aria-label="Reproduzir vídeo institucional da ToniKar"
                       className="group absolute inset-0 flex items-center justify-center bg-gradient-to-br from-carbon via-carbon/90 to-black"
                     >
                       <iframe
@@ -128,7 +128,7 @@ function AboutPage() {
                         aria-hidden
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
-                      <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-performance text-carbon shadow-[0_10px_40px_-5px_rgba(16,185,129,0.6)] transition group-hover:scale-110">
+                      <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-performance text-clean shadow-[0_10px_40px_-5px_rgba(143,29,36,0.55)] transition group-hover:scale-110">
                         <Play className="h-7 w-7 translate-x-0.5 fill-current" />
                       </span>
                       <span className="absolute bottom-6 left-6 right-6 text-left">
@@ -136,7 +136,7 @@ function AboutPage() {
                           Vídeo institucional
                         </span>
                         <span className="mt-1 block font-display text-lg font-medium text-clean">
-                          Conheça a Atomo Car
+                          Conheça a ToniKar
                         </span>
                       </span>
                     </button>

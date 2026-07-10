@@ -22,14 +22,14 @@ export const Route = createFileRoute("/_public/estoque")({
   validateSearch: zodValidator(estoqueSearchSchema),
   head: () => ({
     meta: [
-      { title: "Estoque — Atomo Car" },
+      { title: "Estoque — ToniKar" },
       { name: "description", content: "Confira nosso estoque de seminovos e usados com procedência verificada." },
-      { property: "og:title", content: "Estoque — Atomo Car" },
+      { property: "og:title", content: "Estoque — ToniKar" },
       { property: "og:description", content: "Veículos selecionados, prontos para visita." },
-      { property: "og:url", content: "https://atomocar.com.br/estoque" },
+      { property: "og:url", content: "https://tonikar.com.br/estoque" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/estoque" },
+      { rel: "canonical", href: "https://tonikar.com.br/estoque" },
     ],
   }),
   component: EstoquePage,

@@ -15,5 +15,5 @@ export function vehicleInterestMessage(v: Vehicle): string {
 }
 
 export function generalMessage(): string {
-  return "Olá! Vim pelo site da Atomo Car e gostaria de mais informações.";
+  return "Olá! Vim pelo site da ToniKar e gostaria de mais informações.";
 }

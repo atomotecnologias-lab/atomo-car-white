@@ -30,7 +30,7 @@ export function HeroSearch() {
           </h1>
 
           <p className="mt-5 max-w-xl font-display text-base font-light leading-relaxed tracking-tight text-clean/75 sm:text-lg">
-            Na Atomo Car você encontra veículos com procedência,
+            Na ToniKar você encontra veículos com procedência,
             condições competitivas e atendimento que coloca você em primeiro lugar.
           </p>
         </div>

@@ -10,29 +10,27 @@ import { listFeaturedVehicles } from "@/services/vehiclesService";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowLeftRight } from "lucide-react";
 import heroPoster from "@/assets/hero-sequence/hero-poster.jpg.asset.json";
-import heroVideo from "@/assets/hero-sequence/hero.webm.asset.json";
 
 export const Route = createFileRoute("/_public/")({
   head: () => ({
     meta: [
-      { title: "Atomo Car — Seminovos e usados em Jaraguá do Sul" },
+      { title: "ToniKar — Seminovos e usados em Jaraguá do Sul" },
       {
         name: "description",
         content:
           "Veículos selecionados, atendimento transparente e condições para compra, venda, troca e financiamento em Jaraguá do Sul.",
       },
-      { property: "og:title", content: "Atomo Car" },
+      { property: "og:title", content: "ToniKar" },
       {
         property: "og:description",
         content:
           "Encontre seu próximo veículo com confiança. Procedência verificada, atendimento humano.",
       },
-      { property: "og:url", content: "https://atomocar.com.br/" },
+      { property: "og:url", content: "https://tonikar.com.br/" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/" },
+      { rel: "canonical", href: "https://tonikar.com.br/" },
       { rel: "preload", as: "image", href: heroPoster.url, fetchPriority: "high" },
-      { rel: "preload", as: "video", href: heroVideo.url, type: "video/webm" },
     ],
   }),
   component: HomePage,
@@ -77,8 +75,9 @@ function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
             <img
-              src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80"
-              alt="Avaliação de veículo"
+              src="/assets/venda-veiculo.jpg"
+              alt="Avaliação de veículo na ToniKar"
+              loading="lazy"
               className="h-full w-full object-cover"
             />
             <div className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full bg-carbon/85 px-3 py-1.5 text-xs text-clean backdrop-blur">
@@ -90,7 +89,7 @@ function HomePage() {
             <SectionHeading
               eyebrow="Venda seu veículo"
               title="Quer vender ou trocar seu carro?"
-              subtitle="A Atomo Car compra seu veículo ou aceita como parte do pagamento. Avaliação rápida e proposta justa."
+              subtitle="A ToniKar compra seu veículo ou aceita como parte do pagamento. Avaliação rápida e proposta justa."
             />
             <ul className="mt-6 space-y-3 text-sm text-foreground/80">
               <li className="flex gap-3">
@@ -123,8 +122,8 @@ function HomePage() {
 
       <section className="bg-background py-20 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-accent">
-            Sobre a Atomo Car
+          <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-gold">
+            Sobre a ToniKar
           </div>
           <h2 className="mt-3 font-display text-3xl font-medium leading-tight text-clean sm:text-4xl">
             Confiança se constrói em cada negócio realizado.

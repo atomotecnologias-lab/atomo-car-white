@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { mockSettings } from "@/data/mockSettings";
 import { Instagram, Facebook, MapPin, Phone, Clock } from "lucide-react";
-import atomoCarLogo from "@/assets/atomo-car-logo.svg.asset.json";
 
 export function PublicFooter() {
   return (
@@ -13,11 +12,11 @@ export function PublicFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
           <div className="flex items-center gap-4">
-            <span className="grid h-20 w-20 place-items-center overflow-hidden rounded-2xl bg-premium ring-1 ring-white/10">
-              <img src={atomoCarLogo.url} alt="Atomo Car" className="h-[88%] w-[88%] object-contain" />
+            <span className="grid h-20 w-20 place-items-center rounded-2xl bg-premium ring-1 ring-white/10">
+              <span className="font-display text-3xl font-bold tracking-tight text-performance">TK</span>
             </span>
             <div className="leading-tight">
-              <div className="font-display text-2xl font-semibold tracking-tight">Atomo Car</div>
+              <div className="font-display text-2xl font-semibold tracking-tight">ToniKar</div>
               <div className="mt-1 text-[10px] uppercase tracking-[0.28em] text-titanium">
                 Gestão Automotiva
               </div>
@@ -92,7 +91,7 @@ export function PublicFooter() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-clean/50 sm:flex-row sm:px-6 lg:px-8">
-          <span>© {new Date().getFullYear()} Atomo Car. Todos os direitos reservados.</span>
+          <span>© {new Date().getFullYear()} ToniKar. Todos os direitos reservados.</span>
           <span>Gestão Automotiva</span>
         </div>
       </div>

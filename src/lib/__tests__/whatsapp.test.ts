@@ -28,6 +28,6 @@ describe("whatsapp", () => {
   });
 
   it("returns a default general message", () => {
-    expect(generalMessage()).toMatch(/Atomo Car/);
+    expect(generalMessage()).toMatch(/ToniKar/);
   });
 });

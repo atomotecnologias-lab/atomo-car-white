@@ -28,7 +28,7 @@ const CHANNELS: Channel[] = [
     icon: Instagram,
     tone: "from-pink-500/15 to-purple-500/15 text-pink-300 border-pink-400/30",
     build: (v) =>
-      `🚗 ${v.brand} ${v.model} ${v.version} — ${v.year}\n📍 ${v.km.toLocaleString("pt-BR")} km · revisado\n💰 ${fmt(v.price)}\n\n• Procedência verificada\n• Pronto para transferência\n• Aceitamos troca e facilitamos seu financiamento\n\nChama no direct para agendar test-drive 👇\n\n#AtomoCar #Seminovos #EstoqueAutomotivo #${v.brand.toLowerCase()} #${v.model.toLowerCase().replace(/\s+/g, "")}`,
+      `🚗 ${v.brand} ${v.model} ${v.version} — ${v.year}\n📍 ${v.km.toLocaleString("pt-BR")} km · revisado\n💰 ${fmt(v.price)}\n\n• Procedência verificada\n• Pronto para transferência\n• Aceitamos troca e facilitamos seu financiamento\n\nChama no direct para agendar test-drive 👇\n\n#ToniKar #Seminovos #EstoqueAutomotivo #${v.brand.toLowerCase()} #${v.model.toLowerCase().replace(/\s+/g, "")}`,
   },
   {
     key: "marketplace",
@@ -36,7 +36,7 @@ const CHANNELS: Channel[] = [
     icon: Facebook,
     tone: "from-blue-500/15 to-cyan-500/15 text-blue-300 border-blue-400/30",
     build: (v) =>
-      `${v.brand} ${v.model} ${v.version} ${v.year}\n${v.km.toLocaleString("pt-BR")} km — único dono, revisões em dia.\n\nValor: ${fmt(v.price)}\n\nAceitamos troca. Financiamento em até 60x. Procedência verificada e garantia de 3 meses no motor e câmbio.\n\nAtomo Car — atendimento 7 dias por semana.`,
+      `${v.brand} ${v.model} ${v.version} ${v.year}\n${v.km.toLocaleString("pt-BR")} km — único dono, revisões em dia.\n\nValor: ${fmt(v.price)}\n\nAceitamos troca. Financiamento em até 60x. Procedência verificada e garantia de 3 meses no motor e câmbio.\n\nToniKar — atendimento 7 dias por semana.`,
   },
   {
     key: "google",
@@ -44,7 +44,7 @@ const CHANNELS: Channel[] = [
     icon: Globe,
     tone: "from-emerald-500/15 to-teal-500/15 text-emerald-300 border-emerald-400/30",
     build: (v) =>
-      `${v.brand} ${v.model} ${v.version} ${v.year} disponível. ${v.km.toLocaleString("pt-BR")} km, procedência verificada, ${fmt(v.price)}. Aceitamos troca e financiamento. Agende seu test-drive na Atomo Car.`,
+      `${v.brand} ${v.model} ${v.version} ${v.year} disponível. ${v.km.toLocaleString("pt-BR")} km, procedência verificada, ${fmt(v.price)}. Aceitamos troca e financiamento. Agende seu test-drive na ToniKar.`,
   },
   {
     key: "whatsapp",

@@ -79,15 +79,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Atomo Car — Seminovos selecionados" },
+      { title: "ToniKar — Seminovos selecionados" },
       {
         name: "description",
         content:
-          "Atomo Car: seminovos e usados com procedência. Compra, venda, troca e financiamento com atendimento transparente.",
+          "ToniKar: seminovos e usados com procedência. Compra, venda, troca e financiamento com atendimento transparente.",
       },
-      { name: "author", content: "Atomo Car" },
+      { name: "author", content: "ToniKar" },
       { name: "theme-color", content: "#0a0a0a" },
-      { property: "og:site_name", content: "Atomo Car" },
+      { property: "og:site_name", content: "ToniKar" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -107,8 +107,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AutoDealer",
-          name: "Atomo Car",
-          url: "https://atomocar.com.br",
+          name: "ToniKar",
+          url: "https://tonikar.com.br",
           areaServed: "Jaraguá do Sul, SC",
           address: {
             "@type": "PostalAddress",

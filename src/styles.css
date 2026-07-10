@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Atomo Car — Design System v2
- * Direção: automotivo premium, performance, escuro, tecnológico.
- * Paleta: Verde Performance / Racing + Black Carbon / Premium + Titanium + White Clean.
+ * ToniKar — Design System v2
+ * Direção: automotivo premium, escuro, sofisticado.
+ * Paleta (site público): Grafite + Vinho (marca) + Dourado (destaque premium) + Off-white.
  * Tipografia: Sora (display), Inter (sans), JetBrains Mono (técnico).
  */
 
@@ -53,9 +53,10 @@
   --color-titanium: var(--titanium);
   --color-clean: var(--clean);
 
-  /* Aliases mantidos p/ retrocompat */
-  --color-gold: var(--accent);
-  --color-gold-soft: var(--accent);
+  /* Destaque premium (dourado) + superfície clara */
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold);
+  --color-off-white: var(--off-white);
   --color-graphite: var(--titanium);
   --color-ink: var(--carbon);
   --color-paper: var(--clean);
@@ -85,13 +86,13 @@
   --shadow-card:
     0 1px 0 rgba(255, 255, 255, 0.03) inset,
     0 12px 32px -18px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 0 1px rgba(76, 193, 79, 0.35), 0 18px 60px -20px rgba(76, 193, 79, 0.45);
+  --shadow-glow: 0 0 0 1px rgba(143, 29, 36, 0.35), 0 18px 60px -20px rgba(143, 29, 36, 0.45);
 
   --gradient-hero:
-    radial-gradient(120% 80% at 80% 0%, rgba(76, 193, 79, 0.18), transparent 60%),
-    radial-gradient(80% 60% at 0% 100%, rgba(46, 159, 56, 0.12), transparent 60%),
-    linear-gradient(180deg, #0F1411 0%, #0B0F0D 100%);
-  --gradient-emerald: linear-gradient(135deg, #4CC14F 0%, #2E9F38 100%);
+    radial-gradient(120% 80% at 80% 0%, rgba(143, 29, 36, 0.22), transparent 60%),
+    radial-gradient(80% 60% at 0% 100%, rgba(201, 151, 43, 0.12), transparent 60%),
+    linear-gradient(180deg, #16171B 0%, #111214 100%);
+  --gradient-emerald: linear-gradient(135deg, #8F1D24 0%, #C9972B 100%);
 
   --animate-fade-in: fade-in 0.6s ease-out both;
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -121,67 +122,71 @@
   50% { background-position: 100% 50%; }
 }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 193, 79, 0.45); }
-  50% { box-shadow: 0 0 0 12px rgba(76, 193, 79, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(143, 29, 36, 0.45); }
+  50% { box-shadow: 0 0 0 12px rgba(143, 29, 36, 0); }
 }
 
 :root {
   --radius: 0.625rem;
 
-  /* DARK FIRST — automotivo premium */
-  --background: #0F1411;
-  --foreground: #FFFFFF;
+  /* DARK FIRST — automotivo premium (grafite + vinho + dourado) */
+  --background: #111214;
+  --foreground: #F7F7F5;
 
-  --carbon: #0F1411;
-  --premium: #171B18;
-  --titanium: #8A9290;
-  --clean: #FFFFFF;
-  --performance: #4CC14F;
-  --racing: #2E9F38;
+  --carbon: #111214;
+  --premium: #1B1D21;
+  --titanium: #A8ABB0;
+  --clean: #F7F7F5;
+  --performance: #8F1D24;
+  --racing: #731A20;
 
-  --card: #171B18;
-  --card-foreground: #FFFFFF;
-  --popover: #171B18;
-  --popover-foreground: #FFFFFF;
+  /* Marca (vinho) + destaque premium (dourado) + superfície clara */
+  --gold: #C9972B;
+  --off-white: #F5F3EE;
 
-  /* Primary: verde performance */
-  --primary: #4CC14F;
-  --primary-foreground: #0F1411;
+  --card: #1B1D21;
+  --card-foreground: #F7F7F5;
+  --popover: #1B1D21;
+  --popover-foreground: #F7F7F5;
 
-  --secondary: #1E2421;
-  --secondary-foreground: #FFFFFF;
+  /* Primary: vermelho vinho (marca) */
+  --primary: #8F1D24;
+  --primary-foreground: #F7F7F5;
 
-  --muted: #1E2421;
-  --muted-foreground: #8A9290;
+  --secondary: #1B1D21;
+  --secondary-foreground: #F7F7F5;
 
-  --accent: #4CC14F;
-  --accent-foreground: #0F1411;
+  --muted: #1B1D21;
+  --muted-foreground: #A8ABB0;
+
+  --accent: #8F1D24;
+  --accent-foreground: #F7F7F5;
 
   --destructive: #E5484D;
   --destructive-foreground: #FFFFFF;
 
-  --success: #4CC14F;
+  --success: #3FB950;
   --warning: #F5A524;
   --info: #4CB1F2;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.10);
-  --ring: #4CC14F;
+  --border: #303238;
+  --input: #303238;
+  --ring: #8F1D24;
 
-  --chart-1: #4CC14F;
-  --chart-2: #2E9F38;
-  --chart-3: #8A9290;
-  --chart-4: #FFFFFF;
-  --chart-5: #171B18;
+  --chart-1: #8F1D24;
+  --chart-2: #C9972B;
+  --chart-3: #A8ABB0;
+  --chart-4: #F7F7F5;
+  --chart-5: #1B1D21;
 
   --sidebar: #0B0F0D;
   --sidebar-foreground: #E6EAE7;
-  --sidebar-primary: #4CC14F;
-  --sidebar-primary-foreground: #0F1411;
-  --sidebar-accent: #171B18;
-  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-primary: #8F1D24;
+  --sidebar-primary-foreground: #F7F7F5;
+  --sidebar-accent: #1B1D21;
+  --sidebar-accent-foreground: #F7F7F5;
   --sidebar-border: rgba(255, 255, 255, 0.06);
-  --sidebar-ring: #4CC14F;
+  --sidebar-ring: #8F1D24;
 }
 
 @layer base {
@@ -204,7 +209,7 @@
   }
 
   ::selection {
-    background: rgba(76, 193, 79, 0.35);
+    background: rgba(143, 29, 36, 0.45);
     color: #fff;
   }
 
@@ -256,7 +261,7 @@
     90deg,
     rgba(255, 255, 255, 0.6) 0%,
     #ffffff 30%,
-    #4CC14F 50%,
+    #C9972B 50%,
     #ffffff 70%,
     rgba(255, 255, 255, 0.6) 100%
   );

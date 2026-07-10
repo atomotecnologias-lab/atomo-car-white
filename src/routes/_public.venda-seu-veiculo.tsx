@@ -11,14 +11,14 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_public/venda-seu-veiculo")({
   head: () => ({
     meta: [
-      { title: "Venda seu veículo — Atomo Car" },
+      { title: "Venda seu veículo — ToniKar" },
       { name: "description", content: "Avaliação rápida do seu veículo para venda ou troca em Jaraguá do Sul." },
-      { property: "og:title", content: "Venda seu veículo — Atomo Car" },
+      { property: "og:title", content: "Venda seu veículo — ToniKar" },
       { property: "og:description", content: "Compra à vista ou troca pelo veículo dos seus sonhos." },
-      { property: "og:url", content: "https://atomocar.com.br/venda-seu-veiculo" },
+      { property: "og:url", content: "https://tonikar.com.br/venda-seu-veiculo" },
     ],
     links: [
-      { rel: "canonical", href: "https://atomocar.com.br/venda-seu-veiculo" },
+      { rel: "canonical", href: "https://tonikar.com.br/venda-seu-veiculo" },
     ],
   }),
   component: SellPage,
@@ -31,7 +31,7 @@ function SellPage() {
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Venda ou troca"
-            title="Quer vender seu veículo para a Atomo Car?"
+            title="Quer vender seu veículo para a ToniKar?"
             subtitle="Preencha os dados abaixo. Nossa equipe entra em contato para avaliação."
             align="center"
           />
