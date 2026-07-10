@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { CheckCircle2, Layers, Loader2, Plus, Repeat, RotateCcw, Trash2 } from "lucide-react";
+import { CheckCircle2, Layers, Loader2, Pencil, Plus, Repeat, RotateCcw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatBRLExact, formatDateBR } from "@/lib/format";
 import {
@@ -13,6 +13,8 @@ import {
 } from "@/services/financeService";
 import type { EntryKind, EntryStatus, FinancialEntry, SeriesFrequency } from "@/types/finance";
 import { Button } from "@/components/ui/button";
+import { PeriodSelect } from "@/components/admin/PeriodSelect";
+import { LIST_PERIODS, inPeriod, type ListPeriod } from "@/lib/period";
 import { EntryForm, CATEGORY_LABEL } from "./EntryForm";
 
 const FREQ_BADGE: Record<SeriesFrequency, string> = {
@@ -45,7 +47,9 @@ const STATUS_LABEL: Record<EntryStatus, string> = {
 export function FinanceEntriesScreen({ kind }: { kind: EntryKind }) {
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<FilterKey>("open");
+  const [period, setPeriod] = useState<ListPeriod>("all");
   const [formOpen, setFormOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<FinancialEntry | null>(null);
   const [delTarget, setDelTarget] = useState<FinancialEntry | null>(null);
 
   const { data: entries = [], isLoading } = useQuery({
@@ -97,17 +101,20 @@ export function FinanceEntriesScreen({ kind }: { kind: EntryKind }) {
   });
 
   const filtered = useMemo(() => {
-    switch (filter) {
-      case "open":
-        return entries.filter((e) => e.status !== "paid");
-      case "overdue":
-        return entries.filter((e) => e.status === "overdue");
-      case "paid":
-        return entries.filter((e) => e.status === "paid");
-      default:
-        return entries;
-    }
-  }, [entries, filter]);
+    const byStatus = (() => {
+      switch (filter) {
+        case "open":
+          return entries.filter((e) => e.status !== "paid");
+        case "overdue":
+          return entries.filter((e) => e.status === "overdue");
+        case "paid":
+          return entries.filter((e) => e.status === "paid");
+        default:
+          return entries;
+      }
+    })();
+    return byStatus.filter((e) => inPeriod(e.dueDate, period));
+  }, [entries, filter, period]);
 
   const openTotal = entries.filter((e) => e.status !== "paid").reduce((s, e) => s + e.amount, 0);
   const overdueTotal = entries
@@ -126,7 +133,7 @@ export function FinanceEntriesScreen({ kind }: { kind: EntryKind }) {
           value={formatBRLExact(openTotal)}
         />
         <Total
-          label="Vencidas"
+          label={kind === "payable" ? "Vencidas" : "Atrasadas"}
           value={formatBRLExact(overdueTotal)}
           tone={overdueTotal > 0 ? "negative" : undefined}
         />
@@ -152,19 +159,41 @@ export function FinanceEntriesScreen({ kind }: { kind: EntryKind }) {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
-                {f.label}
+                {kind === "receivable" && f.key === "overdue" ? "Atrasadas" : f.label}
               </button>
             ))}
           </div>
-          {!formOpen && (
-            <Button size="sm" variant="outline" className="ml-auto" onClick={() => setFormOpen(true)}>
-              <Plus className="h-3.5 w-3.5" />
-              Lançar
-            </Button>
-          )}
+          <div className="ml-auto flex items-center gap-2">
+            <PeriodSelect
+              value={period}
+              onChange={setPeriod}
+              options={LIST_PERIODS}
+              ariaLabel="Filtrar lançamentos por período de vencimento"
+            />
+            {!formOpen && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setEditTarget(null);
+                  setFormOpen(true);
+                }}
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Lançar
+              </Button>
+            )}
+          </div>
         </header>
 
         {formOpen && <EntryForm kind={kind} onDone={() => setFormOpen(false)} />}
+        {editTarget && (
+          <EntryForm
+            kind={kind}
+            entry={editTarget}
+            onDone={() => setEditTarget(null)}
+          />
+        )}
 
         {isLoading ? (
           <div className="grid place-items-center py-16">
@@ -181,6 +210,10 @@ export function FinanceEntriesScreen({ kind }: { kind: EntryKind }) {
                 key={e.id}
                 entry={e}
                 kind={kind}
+                onEdit={() => {
+                  setFormOpen(false);
+                  setEditTarget(e);
+                }}
                 onPay={() => payMutation.mutate(e.id)}
                 onUnpay={() => unpayMutation.mutate(e.id)}
                 onDelete={() => {
@@ -324,12 +357,14 @@ function Total({
 function EntryRow({
   entry: e,
   kind,
+  onEdit,
   onPay,
   onUnpay,
   onDelete,
 }: {
   entry: FinancialEntry;
   kind: EntryKind;
+  onEdit: () => void;
   onPay: () => void;
   onUnpay: () => void;
   onDelete: () => void;
@@ -376,6 +411,16 @@ function EntryRow({
         >
           <CheckCircle2 className="h-3.5 w-3.5" />
           {kind === "payable" ? "Pagar" : "Receber"}
+        </button>
+      )}
+      {!isAutomatic && (
+        <button
+          type="button"
+          title="Editar"
+          onClick={onEdit}
+          className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Pencil className="h-3.5 w-3.5" />
         </button>
       )}
       {!isAutomatic && (

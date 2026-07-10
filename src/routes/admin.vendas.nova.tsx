@@ -12,7 +12,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatBRL, formatBRLExact, formatKm } from "@/lib/format";
+import { formatBRL, formatBRLExact, formatKm, maskPhoneBR } from "@/lib/format";
 import { daysInStock } from "@/lib/aging";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { Stepper, type StepDef } from "@/components/admin/stepper/Stepper";
@@ -65,8 +65,11 @@ function NewSalePage() {
   const [salePrice, setSalePrice] = useState("");
   const [buyerName, setBuyerName] = useState("");
   const [buyerPhone, setBuyerPhone] = useState("");
+  const [buyerDocument, setBuyerDocument] = useState("");
   const [sellerId, setSellerId] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [downPayment, setDownPayment] = useState("");
+  const [tradeInValue, setTradeInValue] = useState("");
   const [soldAt, setSoldAt] = useState(new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState("");
   const [search, setSearch] = useState("");
@@ -91,6 +94,9 @@ function NewSalePage() {
   );
   const vehicle = vehicles.find((v) => v.id === vehicleId);
   const priceNum = parseMoney(salePrice);
+  const showDownPayment =
+    paymentMethod === "financing" || paymentMethod === "consortium" || paymentMethod === "mixed";
+  const showTradeIn = paymentMethod === "trade_in" || paymentMethod === "mixed";
 
   const completed = useMemo(() => {
     const done = new Set<string>();
@@ -119,9 +125,12 @@ function NewSalePage() {
         sellerId: sellerId || undefined,
         buyerName: buyerName.trim(),
         buyerPhone: buyerPhone.trim() || undefined,
+        buyerDocument: buyerDocument.trim() || undefined,
         salePrice: priceNum,
         soldAt,
         paymentMethod,
+        downPayment: showDownPayment ? parseMoney(downPayment) : 0,
+        tradeInValue: showTradeIn ? parseMoney(tradeInValue) : 0,
         notes: notes.trim() || undefined,
       }),
     onSuccess: () => {
@@ -265,9 +274,24 @@ function NewSalePage() {
                     <label className="mb-1.5 block text-xs text-muted-foreground">Telefone</label>
                     <input
                       type="tel"
+                      inputMode="numeric"
                       value={buyerPhone}
-                      onChange={(e) => setBuyerPhone(e.target.value)}
+                      onChange={(e) => setBuyerPhone(maskPhoneBR(e.target.value))}
                       placeholder="(47) 99999-9999"
+                      maxLength={15}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-xs text-muted-foreground">
+                      Documento (CPF/CNPJ)
+                    </label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={buyerDocument}
+                      onChange={(e) => setBuyerDocument(e.target.value)}
+                      placeholder="000.000.000-00"
                       className={inputCls}
                     />
                   </div>
@@ -333,6 +357,55 @@ function NewSalePage() {
                       ))}
                     </select>
                   </div>
+                  {showDownPayment && (
+                    <div>
+                      <label className="mb-1.5 block text-xs text-muted-foreground">
+                        Entrada paga no ato (R$)
+                      </label>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={downPayment}
+                        onChange={(e) => setDownPayment(e.target.value)}
+                        placeholder="0"
+                        className={cn(inputCls, "tabular")}
+                      />
+                    </div>
+                  )}
+                  {showTradeIn && (
+                    <div>
+                      <label className="mb-1.5 block text-xs text-muted-foreground">
+                        Valor da troca (R$)
+                      </label>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={tradeInValue}
+                        onChange={(e) => setTradeInValue(e.target.value)}
+                        placeholder="0"
+                        className={cn(inputCls, "tabular")}
+                      />
+                    </div>
+                  )}
+                  {(showDownPayment || showTradeIn) && priceNum > 0 && (
+                    <p className="sm:col-span-2 rounded-lg bg-muted/60 px-3 py-2 text-[12px] text-muted-foreground">
+                      {(() => {
+                        const trade = showTradeIn ? parseMoney(tradeInValue) : 0;
+                        const cash = Math.max(0, priceNum - trade);
+                        const paidNow = showDownPayment ? Math.min(parseMoney(downPayment), cash) : 0;
+                        const toReceive = Math.max(0, cash - paidNow);
+                        return (
+                          <>
+                            {trade > 0 && <>Troca cobre {formatBRLExact(trade)}. </>}
+                            {paidNow > 0 && <>Entra agora {formatBRLExact(paidNow)}. </>}
+                            {toReceive > 0
+                              ? <>Fica <span className="font-medium text-foreground">a receber {formatBRLExact(toReceive)}</span> (venc. +30 dias).</>
+                              : <>Sem valor a receber depois.</>}
+                          </>
+                        );
+                      })()}
+                    </p>
+                  )}
                   <div className="sm:col-span-2">
                     <label className="mb-1.5 block text-xs text-muted-foreground">Observações</label>
                     <textarea

@@ -24,9 +24,12 @@ export interface Sale {
   leadId?: string;
   buyerName: string;
   buyerPhone?: string;
+  buyerDocument?: string;
   salePrice: number;
   soldAt: string;
   paymentMethod: PaymentMethod;
+  downPayment: number;
+  tradeInValue: number;
   acquisitionPriceSnapshot: number;
   costsTotalSnapshot: number;
   commissionTypeSnapshot: CommissionType;
@@ -57,8 +60,13 @@ export interface RegisterSaleInput {
   leadId?: string;
   buyerName: string;
   buyerPhone?: string;
+  buyerDocument?: string;
   salePrice: number;
   soldAt: string;
   paymentMethod: PaymentMethod;
+  /** Entrada paga no ato (financiamento/consórcio). */
+  downPayment?: number;
+  /** Valor coberto por veículo na troca (não é caixa). */
+  tradeInValue?: number;
   notes?: string;
 }

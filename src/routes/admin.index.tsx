@@ -261,6 +261,7 @@ function OwnerDashboard() {
     const items = stock.filter((r) => r.days > min && r.days <= max);
     return { count: items.length, capital: items.reduce((s, r) => s + r.invested, 0) };
   };
+  const bHealthy = bucket(-1, 60);
   const b61_90 = bucket(60, 90);
   const b91_120 = bucket(90, 120);
   const b120 = { ...bucket(120, Infinity) };
@@ -535,6 +536,11 @@ function OwnerDashboard() {
                 >
                   {formatBRL(cashForecast)}
                 </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {cashForecast >= 0
+                    ? "se receber e pagar tudo que está em aberto"
+                    : "capital de giro necessário se pagar tudo antes de receber"}
+                </p>
               </div>
               <div className="mt-4 space-y-2">
                 <div className="flex items-center justify-between text-sm">
@@ -575,8 +581,9 @@ function OwnerDashboard() {
             </Link>
           </header>
 
-          {/* Faixas 60-90 / 90-120 / 120+ */}
-          <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
+          {/* Faixas 0-60 (saudável) / 60-90 / 90-120 / 120+ */}
+          <div className="grid grid-cols-2 divide-x divide-y divide-border border-b border-border sm:grid-cols-4 sm:divide-y-0">
+            <BucketTile label="0–60 dias" bucket={bHealthy} tone="healthy" />
             <BucketTile label="61–90 dias" bucket={b61_90} tone="attention" />
             <BucketTile label="91–120 dias" bucket={b91_120} tone="warning" />
             <BucketTile label="+120 dias" bucket={b120} tone="critical" />
@@ -714,24 +721,23 @@ function BucketTile({
 }: {
   label: string;
   bucket: { count: number; capital: number };
-  tone: "attention" | "warning" | "critical";
+  tone: "healthy" | "attention" | "warning" | "critical";
 }) {
   const empty = bucket.count === 0;
+  const valueCls = empty
+    ? "text-muted-foreground/50"
+    : tone === "healthy"
+      ? "text-success"
+      : tone === "critical"
+        ? "text-destructive"
+        : "text-warning";
   return (
-    <div className="px-4 py-3 text-center">
-      <div className="text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+    <div className={cn("px-4 py-3 text-center", tone === "healthy" && !empty && "bg-success/5")}>
+      <div className="inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+        {tone === "healthy" && <ShieldCheck className="h-3 w-3 text-success" />}
         {label}
       </div>
-      <div
-        className={cn(
-          "mt-1 font-display text-xl font-bold tabular",
-          empty
-            ? "text-muted-foreground/50"
-            : tone === "critical"
-              ? "text-destructive"
-              : "text-warning",
-        )}
-      >
+      <div className={cn("mt-1 font-display text-xl font-bold tabular", valueCls)}>
         {bucket.count}
       </div>
       <div className="text-[11px] text-muted-foreground">

@@ -4,6 +4,7 @@ import {
   formatKm,
   formatYear,
   formatPhone,
+  maskPhoneBR,
   transmissionLabel,
   fuelLabel,
   statusLabel,
@@ -28,6 +29,17 @@ describe("format", () => {
 
   it("returns raw phone when length unexpected", () => {
     expect(formatPhone("123")).toBe("123");
+  });
+
+  it("masks BR phone progressively while typing", () => {
+    expect(maskPhoneBR("")).toBe("");
+    expect(maskPhoneBR("47")).toBe("(47");
+    expect(maskPhoneBR("4799")).toBe("(47) 99");
+    expect(maskPhoneBR("479999")).toBe("(47) 9999");
+    expect(maskPhoneBR("4799999")).toBe("(47) 9999-9"); // fixo 10 dígitos
+    expect(maskPhoneBR("47999998888")).toBe("(47) 99999-8888"); // celular 11 dígitos
+    expect(maskPhoneBR("(47) 99999-8888")).toBe("(47) 99999-8888"); // idempotente
+    expect(maskPhoneBR("479999988889999")).toBe("(47) 99999-8888"); // trunca em 11
   });
 
   it("translates transmission, fuel and status labels", () => {

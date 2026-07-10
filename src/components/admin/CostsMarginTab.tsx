@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Loader2, Plus, Trash2, TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import { Loader2, Pencil, Plus, Trash2, TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatBRLExact, formatDateBR } from "@/lib/format";
-import type { CostType } from "@/types/finance";
+import type { CostType, VehicleCost } from "@/types/finance";
 import {
   createCost,
   deleteCost,
   getVehicleFinancials,
+  updateCost,
   upsertAcquisition,
 } from "@/services/costsService";
 import { Button } from "@/components/ui/button";
@@ -69,13 +70,8 @@ export function CostsMarginTab({
 
   return (
     <div className="space-y-5">
-      {/* Resumo */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <SummaryCard
-          label="Valor de aquisição"
-          value={data.acquisitionPrice !== null ? formatBRLExact(data.acquisitionPrice) : "—"}
-          hint={data.acquisitionPrice === null ? "não registrado" : undefined}
-        />
+      {/* Resumo — a aquisição fica no painel editável abaixo (fonte única) */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <SummaryCard
           label="Custos lançados"
           value={formatBRLExact(data.costsTotal)}
@@ -242,36 +238,62 @@ function CostsPanel({
   onChanged,
 }: {
   vehicleId: string;
-  costs: import("@/types/finance").VehicleCost[];
+  costs: VehicleCost[];
   isSold: boolean;
   onChanged: () => void;
 }) {
   const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [costType, setCostType] = useState<CostType>("mechanical");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [supplier, setSupplier] = useState("");
   const [incurredAt, setIncurredAt] = useState(new Date().toISOString().slice(0, 10));
 
-  const addMutation = useMutation({
-    mutationFn: () =>
-      createCost({
-        vehicleId,
+  const resetForm = () => {
+    setFormOpen(false);
+    setEditingId(null);
+    setCostType("mechanical");
+    setAmount("");
+    setDescription("");
+    setSupplier("");
+    setIncurredAt(new Date().toISOString().slice(0, 10));
+  };
+
+  const openCreate = () => {
+    resetForm();
+    setFormOpen(true);
+  };
+
+  const openEdit = (cost: VehicleCost) => {
+    setEditingId(cost.id);
+    setCostType(cost.costType);
+    setAmount(String(cost.amount));
+    setDescription(cost.description);
+    setSupplier(cost.supplier ?? "");
+    setIncurredAt(cost.incurredAt);
+    setFormOpen(true);
+  };
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const common = {
         costType,
         amount: parseMoney(amount),
         description: description.trim() || COST_TYPE_LABEL[costType],
-        supplier: supplier.trim() || undefined,
         incurredAt,
-      }),
+      };
+      if (editingId) {
+        return updateCost(editingId, { ...common, supplier: supplier.trim() || null });
+      }
+      return createCost({ vehicleId, ...common, supplier: supplier.trim() || undefined });
+    },
     onSuccess: () => {
-      toast.success("Custo lançado.");
-      setAmount("");
-      setDescription("");
-      setSupplier("");
-      setFormOpen(false);
+      toast.success(editingId ? "Custo atualizado." : "Custo lançado.");
+      resetForm();
       onChanged();
     },
-    onError: () => toast.error("Erro ao lançar custo."),
+    onError: () => toast.error(editingId ? "Erro ao atualizar custo." : "Erro ao lançar custo."),
   });
 
   const delMutation = useMutation({
@@ -290,7 +312,7 @@ function CostsPanel({
           Custos do veículo ({costs.length})
         </h3>
         {!formOpen && (
-          <Button size="sm" variant="outline" onClick={() => setFormOpen(true)}>
+          <Button size="sm" variant="outline" onClick={openCreate}>
             <Plus className="h-3.5 w-3.5" />
             Lançar custo
           </Button>
@@ -313,9 +335,12 @@ function CostsPanel({
               toast.error("Informe um valor válido.");
               return;
             }
-            addMutation.mutate();
+            saveMutation.mutate();
           }}
         >
+          {editingId && (
+            <p className="text-xs font-medium text-primary sm:col-span-2">Editando custo</p>
+          )}
           <div>
             <label className="mb-1.5 block text-xs text-muted-foreground">Tipo</label>
             <select
@@ -373,14 +398,16 @@ function CostsPanel({
             </div>
           </div>
           <div className="flex gap-2 sm:col-span-2">
-            <Button type="submit" disabled={addMutation.isPending}>
-              {addMutation.isPending ? (
+            <Button type="submit" disabled={saveMutation.isPending}>
+              {saveMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
+              ) : editingId ? (
+                "Salvar alterações"
               ) : (
                 "Salvar custo"
               )}
             </Button>
-            <Button type="button" variant="ghost" onClick={() => setFormOpen(false)}>
+            <Button type="button" variant="ghost" onClick={resetForm}>
               Cancelar
             </Button>
           </div>
@@ -420,6 +447,14 @@ function CostsPanel({
               <div className="font-display text-sm font-semibold tabular text-foreground">
                 {formatBRLExact(cost.amount)}
               </div>
+              <button
+                type="button"
+                aria-label="Editar custo"
+                onClick={() => openEdit(cost)}
+                className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
               <button
                 type="button"
                 aria-label="Remover custo"

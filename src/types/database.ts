@@ -153,9 +153,12 @@ export interface Database {
           lead_id: string | null
           buyer_name: string
           buyer_phone: string | null
+          buyer_document: string | null
           sale_price: number
           sold_at: string
           payment_method: string
+          down_payment: number
+          trade_in_value: number
           acquisition_price_snapshot: number
           costs_total_snapshot: number
           commission_type_snapshot: string
@@ -169,7 +172,8 @@ export interface Database {
           created_at: string
         }
         Insert: Omit<Database['public']['Tables']['sales']['Row'],
-          'id' | 'created_at' | 'created_by' | 'gross_profit' | 'net_profit'>
+          'id' | 'created_at' | 'created_by' | 'gross_profit' | 'net_profit' | 'buyer_document' | 'down_payment' | 'trade_in_value'> &
+          Partial<Pick<Database['public']['Tables']['sales']['Row'], 'buyer_document' | 'down_payment' | 'trade_in_value'>>
         Update: Partial<Database['public']['Tables']['sales']['Insert']>
       }
       financial_entries: {
@@ -198,6 +202,23 @@ export interface Database {
           Partial<Pick<Database['public']['Tables']['financial_entries']['Row'],
             'group_id' | 'series_type' | 'series_index' | 'series_total' | 'series_frequency'>>
         Update: Partial<Database['public']['Tables']['financial_entries']['Insert']>
+      }
+      audit_log: {
+        Row: {
+          id: string
+          dealership_id: string
+          actor_user_id: string | null
+          actor_name: string
+          action: string
+          entity_type: string
+          entity_id: string | null
+          vehicle_id: string | null
+          summary: string
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['audit_log']['Row'], 'id' | 'created_at'> &
+          Partial<Pick<Database['public']['Tables']['audit_log']['Row'], 'actor_user_id' | 'entity_id' | 'vehicle_id'>>
+        Update: Partial<Database['public']['Tables']['audit_log']['Insert']>
       }
     }
     Views: {

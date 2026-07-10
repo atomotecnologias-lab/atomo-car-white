@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { CheckCircle2, Loader2, Percent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatBRLExact, formatDateBR } from "@/lib/format";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { PeriodSelect } from "@/components/admin/PeriodSelect";
+import { LIST_PERIODS, inPeriod, type ListPeriod } from "@/lib/period";
 import { listEntries, markEntryPaid } from "@/services/financeService";
 import { listTeamMembers } from "@/services/teamService";
 import type { FinancialEntry } from "@/types/finance";
@@ -15,6 +18,7 @@ export const Route = createFileRoute("/admin/vendas/comissoes")({
 
 function CommissionsPage() {
   const queryClient = useQueryClient();
+  const [period, setPeriod] = useState<ListPeriod>("all");
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["entries", "commission"],
     queryFn: () => listEntries({ kind: "payable", category: "commission" }),
@@ -31,45 +35,36 @@ function CommissionsPage() {
     onError: () => toast.error("Erro ao marcar como paga."),
   });
 
-  const open = entries.filter((e) => e.status !== "paid");
-  const paid = entries.filter((e) => e.status === "paid");
+  // Em aberto filtra por vencimento; pagas filtram por data de pagamento.
+  const open = entries.filter((e) => e.status !== "paid" && inPeriod(e.dueDate, period));
+  const paid = entries.filter((e) => e.status === "paid" && inPeriod(e.paidAt, period));
   const openTotal = open.reduce((sum, e) => sum + e.amount, 0);
-
-  // Total em aberto por vendedor
-  const openBySeller = new Map<string, number>();
-  for (const e of open) {
-    if (!e.teamMemberId) continue;
-    openBySeller.set(e.teamMemberId, (openBySeller.get(e.teamMemberId) ?? 0) + e.amount);
-  }
 
   return (
     <>
       <AdminTopbar title="Comissões" subtitle="A pagar e pagas, por vendedor" />
       <div className="flex-1 space-y-5 p-4 sm:p-6 lg:p-8">
-        {/* Resumo por vendedor */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-warning/30 bg-warning/5 p-4">
-            <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-              Total a pagar
-            </div>
-            <div className="mt-1 font-display text-2xl font-semibold tabular text-foreground">
-              {formatBRLExact(openTotal)}
-            </div>
-            <div className="mt-0.5 text-[11px] text-muted-foreground">
-              {open.length} comissão{open.length === 1 ? "" : "s"} em aberto
-            </div>
-          </div>
-          {[...openBySeller.entries()].slice(0, 2).map(([memberId, total]) => (
-            <div key={memberId} className="rounded-2xl border border-border bg-card p-4">
+        {/* Total a pagar + período — o detalhe por vendedor fica no quadro abaixo */}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="w-full sm:max-w-xs">
+            <div className="rounded-2xl border border-warning/30 bg-warning/5 p-4">
               <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {memberById.get(memberId)?.name ?? "Vendedor"}
+                Total a pagar
               </div>
               <div className="mt-1 font-display text-2xl font-semibold tabular text-foreground">
-                {formatBRLExact(total)}
+                {formatBRLExact(openTotal)}
               </div>
-              <div className="mt-0.5 text-[11px] text-muted-foreground">a receber</div>
+              <div className="mt-0.5 text-[11px] text-muted-foreground">
+                {open.length} {open.length === 1 ? "comissão" : "comissões"} em aberto
+              </div>
             </div>
-          ))}
+          </div>
+          <PeriodSelect
+            value={period}
+            onChange={setPeriod}
+            options={LIST_PERIODS}
+            ariaLabel="Filtrar comissões por período"
+          />
         </div>
 
         {isLoading ? (
@@ -111,6 +106,14 @@ function CommissionsPage() {
                 </span>
               )}
             />
+            {open.length === 0 && paid.length === 0 && (
+              <div className="grid place-items-center rounded-2xl border border-border bg-card py-16 text-center">
+                <Percent className="h-8 w-8 text-muted-foreground" />
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Nenhuma comissão neste período.
+                </p>
+              </div>
+            )}
           </>
         )}
       </div>

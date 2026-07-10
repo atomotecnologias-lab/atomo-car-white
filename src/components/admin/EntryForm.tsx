@@ -5,8 +5,14 @@ import { Loader2, Repeat } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatBRLExact, formatDateBR } from "@/lib/format";
 import { addInterval } from "@/lib/dates";
-import { createEntry, createEntrySeries, MAX_SERIES } from "@/services/financeService";
-import type { EntryCategory, EntryKind, SeriesFrequency, SeriesType } from "@/types/finance";
+import { createEntry, createEntrySeries, updateEntry, MAX_SERIES } from "@/services/financeService";
+import type {
+  EntryCategory,
+  EntryKind,
+  FinancialEntry,
+  SeriesFrequency,
+  SeriesType,
+} from "@/types/finance";
 import { Button } from "@/components/ui/button";
 
 export const CATEGORY_LABEL: Record<EntryCategory, string> = {
@@ -21,16 +27,26 @@ export const CATEGORY_LABEL: Record<EntryCategory, string> = {
   taxes: "Impostos",
   supplier: "Fornecedor",
   other: "Outros",
+  down_payment: "Entrada / Sinal",
+  installment_income: "Parcela / Financiamento",
 };
 
-/** Categorias oferecidas no lançamento manual (as demais são automáticas). */
-const MANUAL_CATEGORIES: EntryCategory[] = [
+/** Categorias manuais de PAGAR (as automáticas de venda ficam de fora). */
+const PAYABLE_CATEGORIES: EntryCategory[] = [
   "rent",
   "utilities",
   "payroll",
   "marketing",
   "taxes",
   "supplier",
+  "other",
+];
+
+/** Categorias manuais de RECEBER — coerentes com entradas de caixa. */
+const RECEIVABLE_CATEGORIES: EntryCategory[] = [
+  "vehicle_sale",
+  "down_payment",
+  "installment_income",
   "other",
 ];
 
@@ -58,16 +74,23 @@ function countUntil(firstDue: string, freq: SeriesFrequency, until: string): num
 
 export function EntryForm({
   kind,
+  entry,
   onDone,
 }: {
   kind: EntryKind;
+  /** Presente = modo edição de um lançamento existente. */
+  entry?: FinancialEntry;
   onDone: () => void;
 }) {
   const queryClient = useQueryClient();
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<EntryCategory>(kind === "payable" ? "supplier" : "other");
-  const [amount, setAmount] = useState("");
-  const [dueDate, setDueDate] = useState(new Date().toISOString().slice(0, 10));
+  const isEditing = Boolean(entry);
+  const manualCategories = kind === "payable" ? PAYABLE_CATEGORIES : RECEIVABLE_CATEGORIES;
+  const defaultCategory: EntryCategory = kind === "payable" ? "supplier" : "vehicle_sale";
+
+  const [description, setDescription] = useState(entry?.description ?? "");
+  const [category, setCategory] = useState<EntryCategory>(entry?.category ?? defaultCategory);
+  const [amount, setAmount] = useState(entry ? String(entry.amount) : "");
+  const [dueDate, setDueDate] = useState(entry?.dueDate ?? new Date().toISOString().slice(0, 10));
   const [alreadyPaid, setAlreadyPaid] = useState(false);
 
   // Série (recorrência/parcelamento)
@@ -104,6 +127,14 @@ export function EntryForm({
 
   const mutation = useMutation({
     mutationFn: () => {
+      if (isEditing && entry) {
+        return updateEntry(entry.id, {
+          description: description.trim(),
+          category,
+          amount: amountNum,
+          dueDate,
+        });
+      }
       if (seriesOn) {
         return createEntrySeries({
           kind,
@@ -129,11 +160,15 @@ export function EntryForm({
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ["entries"] });
       queryClient.invalidateQueries({ queryKey: ["finance"] });
-      const n = Array.isArray(result) ? result.length : 1;
-      toast.success(n > 1 ? `${n} lançamentos criados.` : "Lançamento criado.");
+      if (isEditing) {
+        toast.success("Lançamento atualizado.");
+      } else {
+        const n = Array.isArray(result) ? result.length : 1;
+        toast.success(n > 1 ? `${n} lançamentos criados.` : "Lançamento criado.");
+      }
       onDone();
     },
-    onError: () => toast.error("Erro ao criar lançamento."),
+    onError: () => toast.error(isEditing ? "Erro ao atualizar." : "Erro ao criar lançamento."),
   });
 
   const amountLabel = seriesOn && seriesType === "installment" ? "Valor total (R$) *" : "Valor (R$) *";
@@ -179,7 +214,10 @@ export function EntryForm({
           onChange={(e) => setCategory(e.target.value as EntryCategory)}
           className={inputCls}
         >
-          {MANUAL_CATEGORIES.map((c) => (
+          {(manualCategories.includes(category)
+            ? manualCategories
+            : [category, ...manualCategories]
+          ).map((c) => (
             <option key={c} value={c}>
               {CATEGORY_LABEL[c]}
             </option>
@@ -211,20 +249,29 @@ export function EntryForm({
         </div>
       </div>
 
+      {/* Séries só na criação — editar altera apenas este lançamento. */}
+      {isEditing && entry?.groupId && (
+        <p className="rounded-lg bg-muted/50 px-3 py-2 text-[12px] text-muted-foreground sm:col-span-2">
+          Você está editando <span className="font-medium text-foreground">apenas esta ocorrência</span> da série.
+        </p>
+      )}
+
       {/* Toggle da série */}
-      <label className="flex items-center gap-2 text-sm text-foreground sm:col-span-2">
-        <input
-          type="checkbox"
-          checked={seriesOn}
-          onChange={(e) => setSeriesOn(e.target.checked)}
-          className="h-4 w-4 rounded border-input accent-[var(--primary)]"
-        />
-        <Repeat className="h-3.5 w-3.5 text-primary" />
-        {toggleLabel}
-      </label>
+      {!isEditing && (
+        <label className="flex items-center gap-2 text-sm text-foreground sm:col-span-2">
+          <input
+            type="checkbox"
+            checked={seriesOn}
+            onChange={(e) => setSeriesOn(e.target.checked)}
+            className="h-4 w-4 rounded border-input accent-[var(--primary)]"
+          />
+          <Repeat className="h-3.5 w-3.5 text-primary" />
+          {toggleLabel}
+        </label>
+      )}
 
       {/* Opções da série (progressive disclosure) */}
-      {seriesOn && (
+      {!isEditing && seriesOn && (
         <div className="space-y-4 rounded-xl border border-border bg-muted/40 p-4 sm:col-span-2">
           {/* Receber: escolher parcelar x repetir */}
           {kind === "receivable" && (
@@ -311,8 +358,8 @@ export function EntryForm({
         </div>
       )}
 
-      {/* "Já foi paga" só para conta única */}
-      {!seriesOn && (
+      {/* "Já foi paga" só para conta única nova (status pago é gerido pelos botões) */}
+      {!isEditing && !seriesOn && (
         <label className="flex items-center gap-2 text-sm text-muted-foreground sm:col-span-2">
           <input
             type="checkbox"
@@ -328,6 +375,8 @@ export function EntryForm({
         <Button type="submit" size="sm" disabled={mutation.isPending}>
           {mutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
+          ) : isEditing ? (
+            "Salvar alterações"
           ) : seriesOn ? (
             `Gerar ${effectiveCount >= 2 ? effectiveCount : ""} lançamentos`
           ) : (

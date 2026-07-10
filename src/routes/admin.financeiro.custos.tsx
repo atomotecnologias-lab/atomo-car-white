@@ -327,17 +327,17 @@ function VehicleCostCard({ row }: { row: Row }) {
       {open && costs.length > 0 && (
         <ul className="divide-y divide-border border-t border-border">
           {costs.map((cost) => (
-            <li key={cost.id} className="flex items-center gap-3 px-5 py-2.5">
+            <li key={cost.id} className="flex items-center gap-4 px-5 py-2.5">
               <span className="w-28 shrink-0 text-[11px] text-muted-foreground sm:w-32">
                 {COST_TYPE_LABEL[cost.costType]}
               </span>
               <span className="min-w-0 flex-1 truncate text-sm text-foreground">
                 {cost.description}
               </span>
-              <span className="hidden text-[11px] text-muted-foreground sm:block">
+              <span className="hidden w-24 shrink-0 text-right text-[11px] text-muted-foreground sm:block">
                 {formatDateBR(cost.incurredAt)}
               </span>
-              <span className="font-display text-sm tabular text-foreground">
+              <span className="w-28 shrink-0 text-right font-display text-sm tabular text-foreground">
                 {formatBRLExact(cost.amount)}
               </span>
             </li>

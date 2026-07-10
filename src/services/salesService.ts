@@ -10,7 +10,9 @@ import type {
 } from '@/types/sale'
 import type { VehicleStatus } from '@/types/vehicle'
 import { computeSaleProfit } from '@/lib/commission'
+import { formatBRLExact } from '@/lib/format'
 import { getDealershipId } from './dealershipService'
+import { logActivity } from './auditService'
 import { getCommissionConfig } from './settingsService'
 import { getAcquisition, listCostsByVehicle } from './costsService'
 import { updateVehicleStatus } from './vehiclesService'
@@ -35,9 +37,12 @@ function toSale(row: SaleRow): Sale {
     leadId: row.lead_id ?? undefined,
     buyerName: row.buyer_name,
     buyerPhone: row.buyer_phone ?? undefined,
+    buyerDocument: row.buyer_document ?? undefined,
     salePrice: Number(row.sale_price),
     soldAt: row.sold_at,
     paymentMethod: row.payment_method as PaymentMethod,
+    downPayment: Number(row.down_payment ?? 0),
+    tradeInValue: Number(row.trade_in_value ?? 0),
     acquisitionPriceSnapshot: Number(row.acquisition_price_snapshot),
     costsTotalSnapshot: Number(row.costs_total_snapshot),
     commissionTypeSnapshot: row.commission_type_snapshot as CommissionType,
@@ -173,9 +178,12 @@ export async function registerSale(input: RegisterSaleInput): Promise<Sale> {
       lead_id: input.leadId ?? null,
       buyer_name: input.buyerName,
       buyer_phone: input.buyerPhone ?? null,
+      buyer_document: input.buyerDocument ?? null,
       sale_price: input.salePrice,
       sold_at: input.soldAt,
       payment_method: input.paymentMethod,
+      down_payment: input.downPayment ?? 0,
+      trade_in_value: input.tradeInValue ?? 0,
       acquisition_price_snapshot: acquisition.acquisitionPrice,
       costs_total_snapshot: costsTotal,
       commission_type_snapshot: config.type,
@@ -193,21 +201,48 @@ export async function registerSale(input: RegisterSaleInput): Promise<Sale> {
   try {
     await updateVehicleStatus(input.vehicleId, 'sold')
 
-    const instantPayment = input.paymentMethod === 'cash' || input.paymentMethod === 'pix'
-    const entries: Database['public']['Tables']['financial_entries']['Insert'][] = [
-      {
+    // ── Recebíveis por forma de pagamento ──
+    // tradeIn = coberto por veículo (não é caixa). cashPart = o que o comprador paga.
+    // À vista/Pix/Troca: o caixa entra no ato. Financiamento/Consórcio/Misto: entra a
+    // entrada (pago) e o restante fica a receber (banco/carta) em +30 dias.
+    const tradeIn = Math.max(0, Math.min(input.tradeInValue ?? 0, input.salePrice))
+    const cashPart = input.salePrice - tradeIn
+    const instantPayment =
+      input.paymentMethod === 'cash' ||
+      input.paymentMethod === 'pix' ||
+      input.paymentMethod === 'trade_in'
+    const paidNow = instantPayment ? cashPart : Math.max(0, Math.min(input.downPayment ?? 0, cashPart))
+    const toReceive = cashPart - paidNow
+
+    const entries: Database['public']['Tables']['financial_entries']['Insert'][] = []
+    if (paidNow > 0) {
+      entries.push({
         dealership_id: dealershipId,
         kind: 'receivable',
         category: 'vehicle_sale',
-        description: `Venda ${vehicleLabel} — ${input.buyerName}`,
-        amount: input.salePrice,
-        due_date: instantPayment ? input.soldAt : addDays(input.soldAt, 30),
-        paid_at: instantPayment ? input.soldAt : null,
+        description: `${toReceive > 0 ? 'Entrada' : 'Venda'} ${vehicleLabel} — ${input.buyerName}`,
+        amount: paidNow,
+        due_date: input.soldAt,
+        paid_at: input.soldAt,
         vehicle_id: input.vehicleId,
         sale_id: sale.id,
         team_member_id: null,
-      },
-    ]
+      })
+    }
+    if (toReceive > 0) {
+      entries.push({
+        dealership_id: dealershipId,
+        kind: 'receivable',
+        category: 'vehicle_sale',
+        description: `A receber ${vehicleLabel} — ${input.buyerName}`,
+        amount: toReceive,
+        due_date: addDays(input.soldAt, 30),
+        paid_at: null,
+        vehicle_id: input.vehicleId,
+        sale_id: sale.id,
+        team_member_id: null,
+      })
+    }
 
     if (breakdown.commissionAmount > 0 && input.sellerId) {
       entries.push({
@@ -239,12 +274,22 @@ export async function registerSale(input: RegisterSaleInput): Promise<Sale> {
       })
     }
 
-    const { error: entriesError } = await supabase.from('financial_entries').insert(entries)
-    if (entriesError) throw entriesError
+    if (entries.length > 0) {
+      const { error: entriesError } = await supabase.from('financial_entries').insert(entries)
+      if (entriesError) throw entriesError
+    }
 
     if (input.leadId) {
       await supabase.from('leads').update({ status: 'sold' }).eq('id', input.leadId)
     }
+
+    void logActivity({
+      action: 'create',
+      entityType: 'sale',
+      entityId: sale.id,
+      vehicleId: input.vehicleId,
+      summary: `Registrou a venda de ${vehicleLabel} para ${input.buyerName} por ${formatBRLExact(input.salePrice)}`,
+    })
 
     return sale
   } catch (chainError) {
@@ -255,11 +300,45 @@ export async function registerSale(input: RegisterSaleInput): Promise<Sale> {
   }
 }
 
+export interface UpdateSaleInput {
+  buyerName?: string
+  buyerPhone?: string | null
+  soldAt?: string
+  notes?: string | null
+}
+
+/**
+ * Edita dados NÃO financeiros da venda (comprador/telefone/data/obs).
+ * Valor e comissão não entram aqui de propósito: mexem no lucro e nos
+ * lançamentos já gerados — o caminho seguro é Desfazer + Registrar.
+ */
+export async function updateSale(id: string, patch: UpdateSaleInput): Promise<void> {
+  const update: Database['public']['Tables']['sales']['Update'] = {}
+  if (patch.buyerName !== undefined) update.buyer_name = patch.buyerName
+  if (patch.buyerPhone !== undefined) update.buyer_phone = patch.buyerPhone
+  if (patch.soldAt !== undefined) update.sold_at = patch.soldAt
+  if (patch.notes !== undefined) update.notes = patch.notes
+  const { data, error } = await supabase
+    .from('sales')
+    .update(update as never)
+    .eq('id', id)
+    .select('vehicle_id, buyer_name')
+    .single()
+  if (error) throw error
+  void logActivity({
+    action: 'update',
+    entityType: 'sale',
+    entityId: id,
+    vehicleId: data?.vehicle_id ?? undefined,
+    summary: `Editou os dados da venda de ${data?.buyer_name ?? 'comprador'}`,
+  })
+}
+
 /** Desfaz a venda: DELETE cascateia lançamentos; veículo volta a ativo. */
 export async function undoSale(saleId: string): Promise<void> {
   const { data: saleRow, error: fetchError } = await supabase
     .from('sales')
-    .select('vehicle_id')
+    .select('vehicle_id, buyer_name, sale_price')
     .eq('id', saleId)
     .single()
   if (fetchError) throw fetchError
@@ -268,4 +347,12 @@ export async function undoSale(saleId: string): Promise<void> {
   if (error) throw error
 
   await updateVehicleStatus(saleRow.vehicle_id, 'active')
+
+  void logActivity({
+    action: 'undo',
+    entityType: 'sale',
+    entityId: saleId,
+    vehicleId: saleRow.vehicle_id,
+    summary: `Desfez a venda de ${saleRow.buyer_name} (${formatBRLExact(Number(saleRow.sale_price))})`,
+  })
 }

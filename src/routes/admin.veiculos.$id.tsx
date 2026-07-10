@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { generateAssistedContent } from "@/lib/assisted-content";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { CostsMarginTab } from "@/components/admin/CostsMarginTab";
+import { ActivityFeed } from "@/components/admin/ActivityFeed";
 import { VehicleStatusBadge } from "@/components/admin/VehicleStatusBadge";
 import { QualityScoreRing } from "@/components/admin/QualityScoreRing";
 import { Button } from "@/components/ui/button";
@@ -470,14 +471,18 @@ function VehicleDetailAdmin() {
             </Panel>
           </TabsContent>
 
-          <TabsContent value="history" className="m-0">
-            <Panel title="Histórico">
+          <TabsContent value="history" className="m-0 space-y-4">
+            <Panel title="Marcos">
               <ul className="space-y-4 text-sm">
                 <Event title="Cadastro criado" date={vehicle.createdAt} />
                 <Event title="Última atualização" date={vehicle.updatedAt} />
                 {vehicle.isPublished && <Event title="Publicado no site" date={vehicle.updatedAt} accent />}
               </ul>
             </Panel>
+            <ActivityFeed
+              vehicleId={vehicle.id}
+              emptyHint="Nenhuma ação registrada para este veículo ainda."
+            />
           </TabsContent>
         </Tabs>
       </div>

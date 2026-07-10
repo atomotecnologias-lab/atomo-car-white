@@ -1,7 +1,19 @@
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database'
 import type { CostType, VehicleAcquisition, VehicleCost, VehicleFinancials } from '@/types/finance'
+import { formatBRLExact } from '@/lib/format'
 import { getDealershipId } from './dealershipService'
+import { logActivity } from './auditService'
+
+const COST_LABEL: Record<CostType, string> = {
+  washing: 'Lavagem',
+  bodywork: 'Funilaria',
+  painting: 'Pintura',
+  mechanical: 'Mecânica',
+  documentation: 'Documentação',
+  accessories: 'Acessórios',
+  other: 'Outros',
+}
 
 type CostRow = Database['public']['Tables']['vehicle_costs']['Row']
 type AcquisitionRow = Database['public']['Tables']['vehicle_acquisitions']['Row']
@@ -75,12 +87,66 @@ export async function createCost(input: CreateCostInput): Promise<VehicleCost> {
     .select()
     .single()
   if (error) throw error
-  return toCost(data)
+  const cost = toCost(data)
+  void logActivity({
+    action: 'create',
+    entityType: 'cost',
+    entityId: cost.id,
+    vehicleId: cost.vehicleId,
+    summary: `Lançou custo de ${COST_LABEL[cost.costType]} — ${formatBRLExact(cost.amount)}`,
+  })
+  return cost
 }
 
 export async function deleteCost(id: string): Promise<void> {
-  const { error } = await supabase.from('vehicle_costs').delete().eq('id', id)
+  const { data, error } = await supabase
+    .from('vehicle_costs')
+    .delete()
+    .eq('id', id)
+    .select('cost_type, amount, vehicle_id')
+    .single()
   if (error) throw error
+  void logActivity({
+    action: 'delete',
+    entityType: 'cost',
+    entityId: id,
+    vehicleId: data?.vehicle_id ?? undefined,
+    summary: `Removeu custo de ${COST_LABEL[data.cost_type as CostType]} — ${formatBRLExact(Number(data.amount))}`,
+  })
+}
+
+export interface UpdateCostInput {
+  costType?: CostType
+  amount?: number
+  description?: string
+  supplier?: string | null
+  incurredAt?: string
+}
+
+/** Edita um custo já lançado — sem excluir e recriar. */
+export async function updateCost(id: string, patch: UpdateCostInput): Promise<VehicleCost> {
+  const update: Database['public']['Tables']['vehicle_costs']['Update'] = {}
+  if (patch.costType !== undefined) update.cost_type = patch.costType
+  if (patch.amount !== undefined) update.amount = patch.amount
+  if (patch.description !== undefined) update.description = patch.description
+  if (patch.supplier !== undefined) update.supplier = patch.supplier
+  if (patch.incurredAt !== undefined) update.incurred_at = patch.incurredAt
+  const { data, error } = await supabase
+    .from('vehicle_costs')
+    .update(update)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  const cost = toCost(data)
+  void logActivity({
+    action: 'update',
+    entityType: 'cost',
+    entityId: cost.id,
+    vehicleId: cost.vehicleId,
+    summary: `Editou custo de ${COST_LABEL[cost.costType]} — ${formatBRLExact(cost.amount)}`,
+  })
+  return cost
 }
 
 export async function listAllAcquisitions(): Promise<VehicleAcquisition[]> {
@@ -121,7 +187,15 @@ export async function upsertAcquisition(input: UpsertAcquisitionInput): Promise<
     .select()
     .single()
   if (error) throw error
-  return toAcquisition(data)
+  const acq = toAcquisition(data)
+  void logActivity({
+    action: 'update',
+    entityType: 'acquisition',
+    entityId: acq.id,
+    vehicleId: acq.vehicleId,
+    summary: `Definiu valor de aquisição em ${formatBRLExact(acq.acquisitionPrice)}`,
+  })
+  return acq
 }
 
 /**

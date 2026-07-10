@@ -12,7 +12,9 @@ import type {
 } from '@/types/finance'
 import { roundCents } from '@/lib/commission'
 import { addInterval } from '@/lib/dates'
+import { formatBRLExact } from '@/lib/format'
 import { getDealershipId } from './dealershipService'
+import { logActivity } from './auditService'
 
 /** Limite defensivo de ocorrências por série (evita explosão de linhas). */
 export const MAX_SERIES = 60
@@ -88,7 +90,15 @@ export async function createEntry(input: CreateEntryInput): Promise<FinancialEnt
     .select()
     .single()
   if (error) throw error
-  return toEntry(data)
+  const entry = toEntry(data)
+  void logActivity({
+    action: 'create',
+    entityType: 'entry',
+    entityId: entry.id,
+    vehicleId: entry.vehicleId,
+    summary: `Lançou ${entry.kind === 'payable' ? 'conta a pagar' : 'conta a receber'} “${entry.description}” de ${formatBRLExact(entry.amount)}`,
+  })
+  return entry
 }
 
 /**
@@ -142,7 +152,16 @@ export async function createEntrySeries(input: CreateSeriesInput): Promise<Finan
 
   const { data, error } = await supabase.from('financial_entries').insert(rows).select()
   if (error) throw error
-  return (data ?? []).map(toEntry)
+  const entries = (data ?? []).map(toEntry)
+  if (entries[0]) {
+    void logActivity({
+      action: 'create',
+      entityType: 'entry',
+      vehicleId: entries[0].vehicleId,
+      summary: `Criou série de ${count}x “${input.description}” (${input.kind === 'payable' ? 'a pagar' : 'a receber'})`,
+    })
+  }
+  return entries
 }
 
 /**
@@ -153,31 +172,99 @@ export async function deleteSeries(
   groupId: string,
   opts: { openOnly?: boolean } = { openOnly: true },
 ): Promise<void> {
+  const { data: sample } = await supabase
+    .from('financial_entries')
+    .select('description, vehicle_id')
+    .eq('group_id', groupId)
+    .limit(1)
+    .maybeSingle()
   let query = supabase.from('financial_entries').delete().eq('group_id', groupId)
   if (opts.openOnly) query = query.is('paid_at', null)
   const { error } = await query
   if (error) throw error
+  if (sample) {
+    void logActivity({
+      action: 'delete',
+      entityType: 'entry',
+      vehicleId: sample.vehicle_id ?? undefined,
+      summary: `Excluiu lançamentos em aberto da série “${sample.description}”`,
+    })
+  }
 }
 
 export async function markEntryPaid(id: string, paidAt = todayISO()): Promise<void> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('financial_entries')
     .update({ paid_at: paidAt })
     .eq('id', id)
+    .select('kind, description, amount, vehicle_id')
+    .single()
   if (error) throw error
+  void logActivity({
+    action: 'pay',
+    entityType: 'entry',
+    entityId: id,
+    vehicleId: data.vehicle_id ?? undefined,
+    summary: `${data.kind === 'payable' ? 'Pagou' : 'Recebeu'} “${data.description}” (${formatBRLExact(Number(data.amount))})`,
+  })
 }
 
 export async function markEntryUnpaid(id: string): Promise<void> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('financial_entries')
     .update({ paid_at: null })
     .eq('id', id)
+    .select('kind, description, vehicle_id')
+    .single()
   if (error) throw error
+  void logActivity({
+    action: 'unpay',
+    entityType: 'entry',
+    entityId: id,
+    vehicleId: data.vehicle_id ?? undefined,
+    summary: `Reabriu “${data.description}”`,
+  })
 }
 
 export async function deleteEntry(id: string): Promise<void> {
-  const { error } = await supabase.from('financial_entries').delete().eq('id', id)
+  const { data, error } = await supabase
+    .from('financial_entries')
+    .delete()
+    .eq('id', id)
+    .select('description, amount, vehicle_id')
+    .single()
   if (error) throw error
+  void logActivity({
+    action: 'delete',
+    entityType: 'entry',
+    entityId: id,
+    vehicleId: data?.vehicle_id ?? undefined,
+    summary: `Excluiu o lançamento “${data.description}” (${formatBRLExact(Number(data.amount))})`,
+  })
+}
+
+export interface UpdateEntryInput {
+  description?: string
+  category?: EntryCategory
+  amount?: number
+  dueDate?: string
+}
+
+/** Edita um lançamento existente (descrição/categoria/valor/vencimento). */
+export async function updateEntry(id: string, patch: UpdateEntryInput): Promise<void> {
+  const update: Database['public']['Tables']['financial_entries']['Update'] = {}
+  if (patch.description !== undefined) update.description = patch.description
+  if (patch.category !== undefined) update.category = patch.category
+  if (patch.amount !== undefined) update.amount = patch.amount
+  if (patch.dueDate !== undefined) update.due_date = patch.dueDate
+  const { error } = await supabase.from('financial_entries').update(update).eq('id', id)
+  if (error) throw error
+  void logActivity({
+    action: 'update',
+    entityType: 'entry',
+    entityId: id,
+    summary: `Editou o lançamento${patch.description ? ` “${patch.description}”` : ''}${patch.amount !== undefined ? ` — ${formatBRLExact(patch.amount)}` : ''}`,
+  })
 }
 
 // ------------------------------------------------------------

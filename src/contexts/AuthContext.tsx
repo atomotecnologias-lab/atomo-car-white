@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
+import { setCurrentActor } from '@/services/auditService'
 import type { TeamMember, TeamRole } from '@/types/team'
 
 interface AuthContextValue {
@@ -43,8 +44,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const userId = session?.user?.id
     if (!userId) {
       setMember(null)
+      setCurrentActor({ name: 'Sistema' })
       return
     }
+    const emailName = session?.user?.email?.split('@')[0]
+    // Fallback imediato enquanto o cadastro carrega (dono sem team_member).
+    setCurrentActor({ userId, name: emailName || 'Dono' })
     supabase
       .from('team_members')
       .select('*')
@@ -67,6 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               }
             : null,
         )
+        setCurrentActor({ userId, name: data?.name || emailName || 'Dono' })
       })
     return () => {
       cancelled = true

@@ -1,14 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowDownLeft, ArrowUpRight, Loader2, TriangleAlert, Wrench } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Loader2, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatBRL, formatBRLExact, formatDateBR } from "@/lib/format";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { PeriodSelect } from "@/components/admin/PeriodSelect";
 import {
   getMonthlyCashflow,
   getOpenTotals,
   listEntries,
 } from "@/services/financeService";
+
+type CashflowRange = "3" | "6" | "12";
+
+const CASHFLOW_RANGES: { key: CashflowRange; label: string }[] = [
+  { key: "3", label: "3 meses" },
+  { key: "6", label: "6 meses" },
+  { key: "12", label: "12 meses" },
+];
 
 export const Route = createFileRoute("/admin/financeiro/")({
   component: FinanceOverviewPage,
@@ -26,9 +36,10 @@ function FinanceOverviewPage() {
     queryKey: ["finance", "open-totals"],
     queryFn: getOpenTotals,
   });
+  const [cashflowRange, setCashflowRange] = useState<CashflowRange>("6");
   const { data: cashflow = [], isLoading: loadingFlow } = useQuery({
-    queryKey: ["finance", "cashflow"],
-    queryFn: () => getMonthlyCashflow(6),
+    queryKey: ["finance", "cashflow", cashflowRange],
+    queryFn: () => getMonthlyCashflow(Number(cashflowRange)),
   });
   const { data: openEntries = [] } = useQuery({
     queryKey: ["entries", "open-short"],
@@ -85,24 +96,32 @@ function FinanceOverviewPage() {
               />
             </div>
 
-            {/* Fluxo de caixa 6 meses */}
+            {/* Fluxo de caixa */}
             <section className="rounded-2xl border border-border bg-card">
-              <header className="flex items-center justify-between border-b border-border px-5 py-3.5">
+              <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3.5">
                 <div>
                   <h3 className="font-display text-sm font-semibold text-foreground">
-                    Fluxo de caixa — últimos 6 meses
+                    Fluxo de caixa
                   </h3>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">
                     entradas e saídas realizadas (lançamentos pagos)
                   </p>
                 </div>
-                <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5">
-                    <span className="h-2.5 w-2.5 rounded-sm bg-success" /> Entradas
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <span className="h-2.5 w-2.5 rounded-sm bg-destructive/70" /> Saídas
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-2.5 w-2.5 rounded-sm bg-success" /> Entradas
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-2.5 w-2.5 rounded-sm bg-destructive/70" /> Saídas
+                    </span>
+                  </div>
+                  <PeriodSelect
+                    value={cashflowRange}
+                    onChange={setCashflowRange}
+                    options={CASHFLOW_RANGES}
+                    ariaLabel="Período do fluxo de caixa"
+                  />
                 </div>
               </header>
               <div className="p-5">
@@ -198,23 +217,6 @@ function FinanceOverviewPage() {
                 </ul>
               )}
             </section>
-
-            {/* Atalho para custos */}
-            <Link
-              to="/admin/financeiro/custos"
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/40"
-            >
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary">
-                <Wrench className="h-4 w-4" />
-              </span>
-              <div className="flex-1">
-                <div className="text-sm font-medium text-foreground">Custos por veículo</div>
-                <div className="text-[11px] text-muted-foreground">
-                  Quanto foi investido em cada carro do pátio
-                </div>
-              </div>
-              <span className="text-primary">→</span>
-            </Link>
           </>
         )}
       </div>

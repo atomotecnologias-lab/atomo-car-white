@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Megaphone,
   BarChart3,
+  History,
   Warehouse,
   PlusCircle,
   Wrench,
@@ -84,6 +85,7 @@ const groups: Group[] = [
 
 const footerItems: Item[] = [
   { to: "/admin/relatorios", label: "Relatórios", icon: BarChart3 },
+  { to: "/admin/atividade", label: "Atividade", icon: History },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
 

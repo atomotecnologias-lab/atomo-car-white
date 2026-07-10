@@ -19,6 +19,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PublicIndexRouteImport } from './routes/_public.index'
 import { Route as AdminRelatoriosRouteImport } from './routes/admin.relatorios'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin.configuracoes'
+import { Route as AdminAtividadeRouteImport } from './routes/admin.atividade'
 import { Route as PublicVendaSeuVeiculoRouteImport } from './routes/_public.venda-seu-veiculo'
 import { Route as PublicSobreRouteImport } from './routes/_public.sobre'
 import { Route as PublicPoliticaDePrivacidadeRouteImport } from './routes/_public.politica-de-privacidade'
@@ -88,6 +89,11 @@ const AdminRelatoriosRoute = AdminRelatoriosRouteImport.update({
 const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   id: '/configuracoes',
   path: '/configuracoes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAtividadeRoute = AdminAtividadeRouteImport.update({
+  id: '/atividade',
+  path: '/atividade',
   getParentRoute: () => AdminRoute,
 } as any)
 const PublicVendaSeuVeiculoRoute = PublicVendaSeuVeiculoRouteImport.update({
@@ -211,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/politica-de-privacidade': typeof PublicPoliticaDePrivacidadeRoute
   '/sobre': typeof PublicSobreRoute
   '/venda-seu-veiculo': typeof PublicVendaSeuVeiculoRoute
+  '/admin/atividade': typeof AdminAtividadeRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/admin/': typeof AdminIndexRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByTo {
   '/politica-de-privacidade': typeof PublicPoliticaDePrivacidadeRoute
   '/sobre': typeof PublicSobreRoute
   '/venda-seu-veiculo': typeof PublicVendaSeuVeiculoRoute
+  '/admin/atividade': typeof AdminAtividadeRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/': typeof PublicIndexRoute
@@ -275,6 +283,7 @@ export interface FileRoutesById {
   '/_public/politica-de-privacidade': typeof PublicPoliticaDePrivacidadeRoute
   '/_public/sobre': typeof PublicSobreRoute
   '/_public/venda-seu-veiculo': typeof PublicVendaSeuVeiculoRoute
+  '/admin/atividade': typeof AdminAtividadeRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/_public/': typeof PublicIndexRoute
@@ -310,6 +319,7 @@ export interface FileRouteTypes {
     | '/politica-de-privacidade'
     | '/sobre'
     | '/venda-seu-veiculo'
+    | '/admin/atividade'
     | '/admin/configuracoes'
     | '/admin/relatorios'
     | '/admin/'
@@ -340,6 +350,7 @@ export interface FileRouteTypes {
     | '/politica-de-privacidade'
     | '/sobre'
     | '/venda-seu-veiculo'
+    | '/admin/atividade'
     | '/admin/configuracoes'
     | '/admin/relatorios'
     | '/'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/_public/politica-de-privacidade'
     | '/_public/sobre'
     | '/_public/venda-seu-veiculo'
+    | '/admin/atividade'
     | '/admin/configuracoes'
     | '/admin/relatorios'
     | '/_public/'
@@ -473,6 +485,13 @@ declare module '@tanstack/react-router' {
       path: '/configuracoes'
       fullPath: '/admin/configuracoes'
       preLoaderRoute: typeof AdminConfiguracoesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/atividade': {
+      id: '/admin/atividade'
+      path: '/atividade'
+      fullPath: '/admin/atividade'
+      preLoaderRoute: typeof AdminAtividadeRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_public/venda-seu-veiculo': {
@@ -651,6 +670,7 @@ const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 interface AdminRouteChildren {
+  AdminAtividadeRoute: typeof AdminAtividadeRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminRelatoriosRoute: typeof AdminRelatoriosRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -671,6 +691,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAtividadeRoute: AdminAtividadeRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminRelatoriosRoute: AdminRelatoriosRoute,
   AdminIndexRoute: AdminIndexRoute,

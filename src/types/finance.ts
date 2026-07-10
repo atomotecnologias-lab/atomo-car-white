@@ -53,7 +53,10 @@ export type EntryCategory =
   | "marketing"
   | "taxes"
   | "supplier"
-  | "other";
+  | "other"
+  // Recebimento (Contas a Receber) — ver migration 010
+  | "down_payment"
+  | "installment_income";
 
 /** Derivado de paid_at/due_date — nunca persistido. */
 export type EntryStatus = "open" | "overdue" | "paid";
