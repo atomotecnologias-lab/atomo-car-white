@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import heroPoster from "@/assets/hero-sequence/hero-poster.jpg.asset.json";
 
 interface Props {
   children: ReactNode;
 }
 
-// Fontes servidas de /public/assets. Ordem: webm (menor, Chrome/Firefox/Android)
-// → mp4 (universal, Safari/iOS). No mobile, versão mais leve.
+// Assets servidos de /public/assets. Nomes VERSIONADOS (-2): o Vercel serve
+// /assets/* com cache imutável de 1 ano, então trocar o conteúdo exige novo nome.
+// Ordem das fontes: webm (menor, Chrome/Firefox/Android) → mp4 (universal, Safari/iOS).
+const HERO_POSTER = "/assets/hero-poster-2.jpg";
 const DESKTOP_SOURCES = [
-  { src: "/assets/hero.webm", type: "video/webm" },
-  { src: "/assets/hero.mp4", type: "video/mp4" },
+  { src: "/assets/hero-2.webm", type: "video/webm" },
+  { src: "/assets/hero-2.mp4", type: "video/mp4" },
 ];
-const MOBILE_SOURCES = [{ src: "/assets/hero-mobile.mp4", type: "video/mp4" }];
+const MOBILE_SOURCES = [{ src: "/assets/hero-mobile-2.mp4", type: "video/mp4" }];
 
 export function HeroSequence({ children }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -60,7 +61,7 @@ export function HeroSequence({ children }: Props) {
       <div className="absolute inset-0 -z-10">
         {reducedMotion ? (
           <img
-            src={heroPoster.url}
+            src={HERO_POSTER}
             alt=""
             aria-hidden
             className="h-full w-full object-cover opacity-60"
@@ -69,7 +70,7 @@ export function HeroSequence({ children }: Props) {
           <video
             key={isMobile ? "mobile" : "desktop"}
             ref={videoRef}
-            poster={heroPoster.url}
+            poster={HERO_POSTER}
             autoPlay
             muted
             loop

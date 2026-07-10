@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { listFeaturedVehicles } from "@/services/vehiclesService";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowLeftRight } from "lucide-react";
-import heroPoster from "@/assets/hero-sequence/hero-poster.jpg.asset.json";
 
 export const Route = createFileRoute("/_public/")({
   head: () => ({
@@ -30,7 +29,7 @@ export const Route = createFileRoute("/_public/")({
     ],
     links: [
       { rel: "canonical", href: "https://tonikar.com.br/" },
-      { rel: "preload", as: "image", href: heroPoster.url, fetchPriority: "high" },
+      { rel: "preload", as: "image", href: "/assets/hero-poster-2.jpg", fetchPriority: "high" },
     ],
   }),
   component: HomePage,
